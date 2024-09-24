@@ -114,7 +114,7 @@ export default function WordTetris() {
       setSelectedLetters([]);
       const wordScore = selectedWord.length + 1; // 1 point per word + N points for letters
 
-      AntdMessage.success(`Paraula &quot;${selectedWord}&quot; trobada! +${wordScore} punts!`);
+      AntdMessage.success(`Paraula "${selectedWord}" trobada! +${wordScore} punts!`);
       
       // Update score
       setScore(prevScore => prevScore + wordScore);
@@ -137,7 +137,7 @@ export default function WordTetris() {
       AntdMessage.error('Paraula ja trobada');
       setSelectedLetters([]);  // Deselect all letters
     } else {
-      AntdMessage.error(`La paraula &quot;${selectedWord}&quot; no s'ha trobat.`);
+      AntdMessage.error(`La paraula "${selectedWord}" no s'ha trobat.`);
       setSelectedLetters([]);  // Deselect all letters
     }
   };
