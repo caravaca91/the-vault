@@ -1,0 +1,555 @@
+/* Difficulty Selection Styles */
+/* Overall container for the first page */
+.difficultyContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f2f5; /* Lighter background color */
+}
+
+/* Difficulty selection box */
+.difficultyBox {
+  background-color: #ffffff; /* White background for the box */
+  border: 2px solid rgba(0, 0, 0, 0.1); /* Light border */
+  border-radius: 16px; /* Softer border-radius */
+  padding: 30px;
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Softer shadow */
+  font-family: 'Inter', sans-serif; /* Calming font */
+}
+
+/* Difficulty header */
+.difficultyHeader {
+  font-size: 24px;
+  color: #2c3e50; /* Deep calming blue */
+  margin-bottom: 20px;
+  font-weight: bold; /* Bold but still calming */
+}
+
+/* Styled buttons for difficulty */
+.difficultyButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.difficultyButton,
+.instructionsButton {
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.difficultyButtonFacil {
+  background-color: rgb(194, 239, 194); /* Calming Green */
+}
+
+.difficultyButtonFacil:hover {
+  background-color: rgb(173, 222, 173);
+}
+
+.difficultyButtonMitjana {
+  background-color: rgb(144, 219, 244); /* Calming Light Blue */
+}
+
+.difficultyButtonMitjana:hover {
+  background-color: rgb(129, 207, 231);
+}
+
+.difficultyButtonDificil {
+  background-color: rgb(255, 178, 102); /* Calming Orange */
+}
+
+.difficultyButtonDificil:hover {
+  background-color: rgb(240, 158, 90);
+}
+
+/* Instructions Button */
+.instructionsButton {
+  background-color: rgb(129, 207, 231); /* Light Blue to match the other calming buttons */
+}
+
+.instructionsButton:hover {
+  background-color: rgb(109, 187, 211);
+  transform: scale(1.05);
+}
+
+/* Instructions modal styling */
+.instructionsModal {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgb(129, 207, 231);  /* Pale blue background */
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  width: 350px;
+  text-align: left;
+  font-family: 'Inter', sans-serif;
+}
+
+.instructionsModal h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: white;
+  text-align: center;
+}
+
+.instructionsModal ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.instructionsModal ul li {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: white;
+  font-weight: bold;
+}
+
+/* Hide the modal */
+.instructionsModalHidden {
+  display: none;
+}
+
+/* Coffee button container */
+.coffeeButtonContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Buy Me a Coffee button style */
+.coffeeButtonContainer a {
+  margin-top: 20px; /* Add space between buttons */
+  display: inline-block;
+}
+
+.coffeeButtonContainer img {
+  display: block;
+  margin: 0 auto; /* Center the button */
+}
+
+/* Game Board Styles */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+  background-color: #f0f2f5; /* Light background for the game */
+  font-family: 'Inter', sans-serif;
+}
+
+.gridContainer {
+  width: 400px;
+  height: 600px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff; /* White grid background */
+  border-radius: 16px; /* Rounded corners */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  overflow: hidden; /* Prevent horizontal overflow */
+}
+
+/* Game board grid */
+.gameBoard {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(15, 1fr);
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* Each letter */
+.letter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  border: 1px solid #ccc;
+  background-color: #fafafa;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.letter:hover {
+  background-color: #f0f8ff;
+  transform: scale(1.05);
+}
+
+/* Highlight selected letters */
+.selected {
+  background-color: #ffeb3b;
+  border: 2px solid #ffcc00;
+  transform: scale(1.1);
+}
+
+/* Sidebar next to the game board */
+.sidebar {
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.selectedLetters {
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #2c3e50;
+  height: 60px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Submit Button (Enviar Paraula) */
+.submitButton {
+  margin-top: 10px;
+  padding: 14px 28px !important;
+  background-color: rgb(144, 219, 244) !important; /* Light Blue */
+  color: white !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+  border: none !important;
+  border-radius: 16px !important;
+  cursor: pointer !important;
+  transition: background-color 0.3s ease, transform 0.2s ease !important;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+.submitButton:hover {
+  background-color: rgb(129, 207, 231) !important; /* Darker blue on hover */
+  transform: translateY(-2px) !important;
+}
+
+/* Deselect Button (Elimina selecció) */
+.deselectButton {
+  margin-top: 10px;
+  padding: 14px 28px !important;
+  background-color: rgb(255, 178, 102) !important; /* Orange */
+  color: white !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+  border: none !important;
+  border-radius: 16px !important;
+  cursor: pointer !important;
+  transition: background-color 0.3s ease, transform 0.2s ease !important;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+.deselectButton:hover {
+  background-color: rgb(240, 158, 90) !important; /* Darker orange on hover */
+  transform: translateY(-2px) !important;
+}
+
+
+/* Scoreboard styling */
+.scoreboard {
+  margin-top: 20px;
+  background-color: #ffffff; /* White background */
+  padding: 20px;
+  border-radius: 16px; /* Softer rounded corners */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); /* Softer shadow */
+  border: 2px solid #3498db; /* Light blue border */
+  transition: transform 0.3s ease;
+  font-family: 'Inter', sans-serif; /* Consistent font */
+  margin-bottom: 20px; /* Add space above the button */
+}
+
+.scoreboardItem {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  font-size: 18px; /* Slightly smaller and more consistent font size */
+  font-weight: bold;
+  color: #2c3e50; /* Deep calming blue */
+}
+
+.scoreboardItem span:last-child {
+  color: #3498db; /* Match the scoreboard border color */
+}
+
+.newRecord {
+  color: green;
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: center;
+  background-color: #ecf9ec; /* Light green background for new record */
+  padding: 10px;
+  border-radius: 12px;
+}
+
+/* Game Over (Has perdut) Message */
+
+.gameOverRow {
+  display: flex;
+  justify-content: flex-start; /* Align both items to the left */
+  align-items: center; /* Center vertically */
+  gap: 10px; /* Add some space between the two elements */
+}
+
+.gameOver {
+  color: white;
+  background-color: rgb(255, 99, 71); /* Same style as the restart button */
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 16px;
+  text-align: left; /* Align to the left */
+  margin-top: 10px;
+  display: inline-block; /* Ensure it doesn’t take full width */
+}
+
+/* Juga de nou Button */
+.restartButton {
+  margin-top: 10px;
+  padding: 14px 28px;
+  background-color: rgb(194, 239, 194); /* Light Blue (same as Mitjana button) */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.restartButton:hover {
+  background-color: rgb(129, 207, 231); /* Slightly darker on hover */
+  transform: translateY(-2px);
+}
+
+/* Container for the button and popup */
+.wordsFoundContainer {
+  margin-top: 20px; /* Add space above the button */
+  position: relative;
+  display: inline-block;
+}
+
+/* Style for the Paraules trobades button */
+.wordsFoundButton {
+  padding: 12px 20px;
+  background-color: rgb(144, 219, 244); /* Same style as other buttons */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.wordsFoundButton:hover {
+  background-color: rgb(129, 207, 231);
+}
+
+/* Hidden popup by default */
+.wordsFoundPopup {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 100%; /* Show below the button */
+  background-color: white;
+  padding: 10px;
+  border: 2px solid #3498db; /* Same blue as other elements */
+  border-radius: 8px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+/* Styling for the list of found words */
+.wordsFoundPopup ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.wordsFoundPopup li {
+  padding: 5px 0;
+  font-size: 14px;
+  color: #333;
+  font-weight: bold;
+}
+margin-top: 20px; /* Add margin to create space between scoreboard and button */
+/* Message handling */
+.message {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  min-height: 50px;
+  padding: 15px 20px;
+  background-color: #f4f4f9;
+  border-radius: 12px;
+  transition: opacity 0.3s ease;
+  opacity: 1;
+  word-wrap: break-word;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.message-hidden {
+  opacity: 0;
+}
+
+/* Modal overlay: Dim the background and center the modal */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Dark transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal box: Rounded corners, shadow, and padding */
+.modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* More pronounced shadow */
+  width: 320px; /* Adjust width */
+  max-height: 400px;
+  overflow-y: auto; /* Allow scrolling if content is long */
+  position: relative; /* For the close button */
+}
+
+/* Close button styling: Round button with hover effect */
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #e74c3c; /* Soft red */
+  color: white;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 50%; /* Make it round */
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.closeButton:hover {
+  background-color: #c0392b; /* Darker red on hover */
+}
+
+/* Modal header */
+.modal h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  text-align: center;
+  color: #333;
+}
+
+/* List of words: Simple, modern typography */
+.modal ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.modal li {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.modal li a {
+  text-decoration: none;
+  color: #3498db; /* Blue for the link */
+  font-weight: bold;
+  transition: color 0.2s ease; /* Smooth hover effect */
+}
+
+.modal li a:hover {
+  color: #2980b9; /* Darker blue on hover */
+  text-decoration: underline;
+}
+
+.mobileMessage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f2f5;
+  text-align: center;
+}
+
+.mobileMessage h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.mobileMessage p {
+  font-size: 16px;
+  color: #555;
+}
+
+/* Target .ant-message-notice, which is the child element */
+.ant-message {
+  position: absolute;
+  top: 400px !important; /* Or whatever value positions it well below the grid */
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Add mobile-specific styles */
+@media (max-width: 768px) {
+  .gameBoard {
+    width: 100%; /* Make the grid take full width on mobile */
+    height: auto; /* Adjust height */
+  }
+
+  .sidebar {
+    display: none; /* Hide the sidebar (scoreboard) on mobile */
+  }
+
+  .buttonContainer {
+    flex-direction: column; /* Stack buttons vertically */
+  }
+
+  .submitButton, .deselectButton {
+    width: 100%; /* Full width buttons for mobile */
+    margin: 10px 0; /* Add margin between buttons */
+  }
+  
+  .mobileMessage {
+    text-align: center;
+    padding: 20px;
+  }
+}

@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;400;700&display=swap');
+
+:root {
+  --background-light: #f1f5f9;
+  --foreground-light: #333;
+  --background-dark: #0a0a0a;
+  --foreground-dark: #ededed;
+  --primary-color: #f43f5e;
+  --font-primary: 'Inter', sans-serif;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: var(--background-dark);
+    --foreground: var(--foreground-dark);
+  }
+}
+
+/* Light mode */
+:root {
+  --background: var(--background-light);
+  --foreground: var(--foreground-light);
+}
+
+body {
+  font-family: var(--font-primary);
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+@layer utilities {
+  .btn-primary {
+    background-color: var(--primary-color);
+    color: #fff;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+.ant-message {
+  position: absolute !important;
+  top: 10px !important;      /* Adjust the top margin as needed */
+  left: 200px !important;     /* Position the message 10px from the left side */
+  width: 200px !important;   /* Set a fixed width for the message */
+  z-index: 500 !important;  /* Ensure it stays on top of other elements */
+}
+
