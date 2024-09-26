@@ -28,7 +28,14 @@ export default function WordTetris() {
   const [score, setScore] = useState<number>(0); // Track the current score
   const [maxScore, setMaxScore] = useState<number>(0); // Initialize max score as 0
   const [longestWord, setLongestWord] = useState<string | null>(null); // New state to track longest word
-  
+  const [showValidWordsModal, setShowValidWordsModal] = useState(false);
+
+  const toggleValidWordsModal = () => {
+    setShowValidWordsModal(!showValidWordsModal);
+  };
+
+
+
   // Ensure localStorage is accessed only on the client side (after mount)
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -234,7 +241,7 @@ export default function WordTetris() {
   // Handle selecting and de-selecting letters
   const handleSelectLetter = (row: number, col: number) => {
     const isSelected = selectedLetters.some(l => l.row === row && l.col === col);
-
+  
     if (isSelected) {
       setSelectedLetters(selectedLetters.filter(l => l.row !== row || l.col !== col));
     } else {
@@ -314,6 +321,21 @@ export default function WordTetris() {
             </ul>
           </div>
 
+          {/* 'Paraules vàlides' button */}
+          <button className={styles.instructionsButton} onClick={toggleValidWordsModal}>
+          Paraules vàlides
+          </button>
+
+          {showValidWordsModal && (
+            <div className={styles.validWordsModal}>
+              <button className={styles.closeButton} onClick={toggleValidWordsModal}>X</button>
+              <p>
+                Lletris funciona amb el Diccionari de l’Scrabble (DISC). Si vols saber què és el DISC, fes click <a href="https://diccionari.totescrable.cat/que-es/" target="_blank" rel="noopener noreferrer">aquí</a>.
+              </p>
+            </div>
+          )}
+
+
           <div className={styles.coffeeButtonContainer}>
             <a href="https://www.buymeacoffee.com/marticabanes" target="_blank" rel="noopener noreferrer">
               <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style={{ height: '60px', width: '217px' }} />
@@ -341,17 +363,24 @@ export default function WordTetris() {
           )}
         </div>
       </div>
-
+  
+      {/* Mobile-specific buttons section */}
+      <div className={styles.mobileButtons}>
+        <button className={styles.submitButton} onClick={handleSubmitWord}>Enviar Paraula</button>
+        <button className={styles.deselectButton} onClick={handleDeselectAll}>Elimina selecció</button>
+      </div>
+  
+      {/* Sidebar for larger screens, hidden on mobile */}
       <div className={styles.sidebar}>
         <div className={styles.selectedLetters}>
           <h3>Lletres Seleccionades: {selectedLetters.map(l => l.char).join('')}</h3>
         </div>
-
+  
         <div className={styles.buttonContainer}>
           <button className={styles.submitButton} onClick={handleSubmitWord}>Enviar Paraula</button>
           <button className={styles.deselectButton} onClick={handleDeselectAll}>Elimina selecció</button>
         </div>
-
+  
         <div className={styles.scoreboard}>
           <div className={styles.scoreboardItem}>
             <span>Paraules trobades:</span>
@@ -370,8 +399,7 @@ export default function WordTetris() {
             <span>{maxScore}</span>
           </div>
         </div>
-
-        {/* Show Paraules trobades button only when game is over */}
+  
         {gameOver && (
           <div>
             <button className={styles.wordsFoundButton} onClick={openModal}>
@@ -379,15 +407,13 @@ export default function WordTetris() {
             </button>
           </div>
         )}
-
-        {/* Modal for displaying found words */}
+  
         {isModalOpen && (
           <div className={styles.modalOverlay}>
             <div className={styles.modal}>
               <button className={styles.closeButton} onClick={closeModal}>X</button>
               <ul>
                 {foundWords.map((word, index) => {
-                  // Capitalize the first letter and make the rest lowercase
                   const capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
                   return (
                     <li key={index}>
@@ -401,7 +427,7 @@ export default function WordTetris() {
             </div>
           </div>
         )}
-
+  
         {gameOver && (
           <div className={styles.gameOverContainer}>
             <div className={styles.gameOverRow}>
@@ -413,4 +439,4 @@ export default function WordTetris() {
       </div>
     </div>
   );
-}
+}  
