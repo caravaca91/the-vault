@@ -19,6 +19,7 @@
   max-width: 400px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Softer shadow */
   font-family: 'Inter', sans-serif; /* Calming font */
+  position: relative; /* Make this box the reference for absolute positioning */
 }
 
 /* Difficulty header */
@@ -32,9 +33,10 @@
 /* Styled buttons for difficulty */
 .difficultyButtons {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-bottom: 20px;
+  flex-direction: column; /* Stack the buttons vertically */
+  gap: 15px; /* Space between each button */
+  align-items: center; /* Center the buttons horizontally */
+  width: 100%;
 }
 
 .difficultyButton,
@@ -50,6 +52,7 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
   width: fit-content;
   margin: 0 auto 10px auto;  /* Reduced bottom margin to 10px */
+  margin-bottom: 20px;
 }
 
 .difficultyButtonFacil {
@@ -127,6 +130,12 @@
   display: none;
 }
 
+.instructionsModalContent {
+  color: white; /* White text */
+  font-size: 14px; /* Smaller text size */
+  font-weight: bold;
+}
+
 /* Coffee button container */
 .coffeeButtonContainer {
   display: flex;
@@ -151,8 +160,10 @@
   justify-content: center;
   align-items: flex-start;
   height: 100vh;
-  background-color: #f0f2f5; /* Light background for the game */
+  background-color: #f0f2f5;
   font-family: 'Inter', sans-serif;
+  gap: 50px;
+  padding-top: 80px; /* Added padding at the top to create space */
 }
 
 .gridContainer {
@@ -163,9 +174,8 @@
   justify-content: center;
   align-items: center;
   background-color: #ffffff; /* White grid background */
-  border-radius: 16px; /* Rounded corners */
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Soft shadow */
-  overflow: hidden; /* Prevent horizontal overflow */
+  border-radius: 16px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* Game board grid */
@@ -229,16 +239,22 @@
 /* Submit Button (Enviar Paraula) */
 .submitButton {
   margin-top: 10px;
-  padding: 14px 28px !important;
-  background-color: rgb(144, 219, 244) !important; /* Light Blue */
-  color: white !important;
-  font-size: 16px !important;
-  font-weight: bold !important;
-  border: none !important;
-  border-radius: 16px !important;
-  cursor: pointer !important;
-  transition: background-color 0.3s ease, transform 0.2s ease !important;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1) !important;
+  padding: 14px 28px;
+  background-color: rgb(144, 219, 244); /* Light Blue */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  outline: none; /* Remove the outline */
+}
+
+.submitButton:focus {
+  outline: none; /* Prevent outline from showing when focused */
+  box-shadow: none; /* Remove the box shadow on focus if needed */
 }
 
 .submitButton:hover {
@@ -269,28 +285,30 @@
 
 /* Scoreboard styling */
 .scoreboard {
-  margin-top: 20px;
-  background-color: #ffffff; /* White background */
+  background-color: #f7f7f7;
+  border-radius: 10px;
   padding: 20px;
-  border-radius: 16px; /* Softer rounded corners */
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); /* Softer shadow */
-  border: 2px solid #3498db; /* Light blue border */
-  transition: transform 0.3s ease;
-  font-family: 'Inter', sans-serif; /* Consistent font */
-  margin-bottom: 20px; /* Add space above the button */
+  margin-top: 70px;
+  margin-bottom: 30px; /* Add margin at the bottom */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 250px;
 }
 
 .scoreboardItem {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 15px;
-  font-size: 18px; /* Slightly smaller and more consistent font size */
+  width: 100%; /* Make the items spread evenly across the width */
+  margin-bottom: 10px;
+  font-size: 16px;
   font-weight: bold;
-  color: #2c3e50; /* Deep calming blue */
+  color: #333;
 }
 
-.scoreboardItem span:last-child {
-  color: #3498db; /* Match the scoreboard border color */
+.scoreboardItem span {
+  color: #555; /* Subtle color for labels */
 }
 
 .newRecord {
@@ -525,7 +543,7 @@ margin-top: 20px; /* Add margin to create space between scoreboard and button */
 /* Target .ant-message-notice, which is the child element */
 .ant-message {
   position: absolute;
-  top: 400px !important; /* Or whatever value positions it well below the grid */
+  top: 80px !important; /* Move it down */
   left: 50%;
   transform: translateX(-50%);
 }
@@ -625,7 +643,7 @@ margin-top: 20px; /* Add margin to create space between scoreboard and button */
   left: 50%;
   transform: translateX(-50%);
   background-color: rgb(129, 207, 231); /* Same blue as the 'Paraules vàlides' button */
-  padding: 20px;
+  padding: 25px 20px 20px 20px; /* Increase top padding to 40px to create space */
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 350px;
@@ -651,4 +669,299 @@ margin-top: 20px; /* Add margin to create space between scoreboard and button */
 
 .closeButton:hover {
   color: rgb(255, 255, 255); /* Keep the hover effect */
+}
+
+.helpBox {
+  background-color: #f7f7f7; /* Match scoreboard background */
+  border-radius: 10px;
+  padding: 15px;
+  margin-top: 70px; /* Increase top margin to push it further down */
+  margin-left: 10px; /* Separation from the grid */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.helpBox h3 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.helpBox ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.helpBox li {
+  background-color: #fff;
+  padding: 8px 10px;
+  margin: 5px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.helpBox li:hover {
+  background-color: #fff; /* Slight color change on hover */
+}
+
+@keyframes flashing {
+  0% { background-color: rgb(194, 239, 194); } /* Original color */
+  50% { background-color: rgb(173, 222, 173); } /* Slightly darker */
+  100% { background-color: rgb(194, 239, 194); } /* Back to original */
+}
+
+.flashButton {
+  animation: flashing 1s infinite; /* Apply the animation */
+}
+
+.longestWordContainer {
+  display: flex;
+  flex-direction: column; /* Stack label and word */
+  width: 100%; /* Ensure it takes the full width */
+  margin-bottom: 10px; /* Add space between this and the next item */
+}
+
+.longestWordLabel {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.longestWordValue {
+  font-size: 16px;
+  color: #555;
+  word-wrap: break-word; /* Ensure longer words break to the next line */
+}
+
+/* Container for the LLETRIS title letters */
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh; /* Full viewport height */
+  padding-top: 20px; /* Adjust as needed */
+}
+
+/* Title container */
+.titleContainer {
+  display: flex;
+  justify-content: center; /* Center the buttons horizontally */
+  align-items: center;
+  margin-bottom: 10px; /* Reduce space between title and grid */
+  gap: 5px; /* Add space between letters */
+  position: absolute;
+  top: 10px; /* Position closer to the grid */
+  left: 50%;
+  transform: translateX(-50%); /* Center it horizontally */
+  z-index: 10; /* Make sure it's on top of other elements */
+}
+
+/* Style each button letter */
+.letterButton {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  outline: none; /* Remove default focus outline */
+}
+
+.letterL1 {
+  background-color: rgb(255, 99, 71); /* Tomato Red for the first L */
+}
+
+.letterL2 {
+  background-color: rgb(102, 178, 255); /* Light Blue for the second L */
+}
+
+.letterE {
+  background-color: rgb(129, 207, 231); /* Blue */
+}
+
+.letterT {
+  background-color: rgb(194, 239, 194); /* Green */
+}
+
+.letterR {
+  background-color: rgb(255, 239, 159); /* Yellow */
+}
+
+.letterI {
+  background-color: rgb(245, 130, 130); /* Pink */
+}
+
+.letterS {
+  background-color: rgb(199, 139, 235); /* Purple */
+}
+
+.letterButton:hover {
+  transform: scale(1.1); /* Slight zoom effect on hover */
+}
+
+/* Adjusted leaderboard size */
+.leaderboardBox {
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 30px; /* Adjusted margin to better align */
+  margin-left: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: calc(100% - 30px); /* Dynamic height to match the grid */
+}
+
+.leaderboardTitle {
+  text-align: center;
+  margin-bottom: 8px;
+  font-size: 16px; /* Smaller title font size */
+  font-weight: bold;
+}
+
+.leaderboardSection {
+  margin-top: 8px;
+}
+
+.leaderboardSubTitle {
+  font-size: 14px; /* Smaller subtitle font size */
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.leaderboardSection ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.leaderboardSection li {
+  background-color: #fff;
+  padding: 6px 8px; /* Smaller padding */
+  margin: 4px 0; /* Smaller margin */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 12px; /* Smaller font for list items */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.leaderboardSection li:hover {
+  background-color: #fff;
+}
+
+.aliasInputContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.aliasInput {
+  width: 100%;
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 20px; /* Adds 20px of space below the input box */
+}
+
+.aliasInput:focus {
+  border: 1px solid rgb(129, 207, 231); /* Light Blue */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  outline: none;
+}
+
+.aliasContainer {
+  background-color: #ffffff; /* White background for the box */
+  border: 2px solid rgba(0, 0, 0, 0.1); /* Light border */
+  border-radius: 16px; /* Softer border-radius */
+  padding: 30px;
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Softer shadow */
+  font-family: 'Inter', sans-serif; /* Calming font */
+}
+
+.aliasHeader {
+  font-size: 24px;
+  color: #2c3e50; /* Deep calming blue */
+  margin-bottom: 20px;
+  font-weight: bold; /* Bold but still calming */
+}
+
+.uniqueCodeContainer {
+  background-color: #f0f8ff; /* Light blue background for visibility */
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.uniqueCodeText {
+  font-size: 18px;
+  color: #333;
+  font-weight: bold;
+}
+
+.uniqueCodeInfo {
+  font-size: 14px;
+  color: #555;
+  margin-top: 10px;
+    margin-bottom: 20px; /* Adds 20px of space below the unique code information */
+
+}
+
+.startGameButton {
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  background-color: rgb(194, 239, 194); /* Light Green */
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: fit-content;
+  margin: 20px auto 10px auto; 
+}
+
+.startGameButton:hover {
+  background-color: rgb(173, 222, 173); /* Slightly darker on hover */
+  transform: translateY(-2px);
+}
+
+.returnButton {
+  background-color: rgb(129, 207, 231); /* Blue color matching 'Paraules vàlides' and 'Com s'hi juga' */
+  color: white;
+  font-weight: bold;
+}
+
+.returnButton:hover {
+  background-color: rgb(109, 187, 211); /* Slightly darker blue on hover */
+}
+
+.buttonHoverEffect {
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.buttonHoverEffect:hover {
+  background-color: #e6e6e6; /* Adjust to a slightly lighter color for a subtle hover effect */
+  transform: scale(1.05);
 }
