@@ -714,20 +714,6 @@ export default function WordTetris() {
       </div>
     );
   }
-  
-  
-  {showMobileModal && (
-    <div className={styles.validWordsModal}>
-      <button className={styles.closeButton} onClick={() => setShowMobileModal(false)}>
-        X
-      </button>
-      <p>
-        Lletris només es pot jugar en un ordinador de sobretaula ara per ara. Torna un altre dia per veure les novetats.
-      </p>
-    </div>
-  )}
-  
-  
 
   if (!gameMode) {
     return (
