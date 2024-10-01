@@ -885,3 +885,22 @@ margin-top: 20px; /* Add margin to create space between scoreboard and button */
   background-color: #e6e6e6; /* Adjust to a slightly lighter color for a subtle hover effect */
   transform: scale(1.05);
 }
+
+.pauseButton {
+  padding: 14px 28px;
+  background-color: rgb(199, 139, 235); /* Purple color */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 10px; /* Space between the previous button */
+}
+
+.pauseButton:hover {
+  background-color: rgb(179, 119, 215); /* Slightly darker purple on hover */
+  transform: translateY(-2px);
+}

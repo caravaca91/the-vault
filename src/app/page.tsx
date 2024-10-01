@@ -56,6 +56,12 @@ export default function WordTetris() {
 
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [showMobileModal, setShowMobileModal] = useState<boolean>(false);
+
+  const [paused, setPaused] = useState<boolean>(false); // New state for pausing the game
+  // Toggle pause
+  const handlePauseToggle = () => {
+    setPaused(!paused);
+  };
   
   const handleAliasSelection = async () => {
     if (userAlias.trim() !== "") {
@@ -486,8 +492,8 @@ export default function WordTetris() {
 
 
   useEffect(() => {
-    if (!gameStarted || gameOver) return;
-  
+    if (!gameStarted || gameOver || paused) return;
+
     // Reduce the interval speed for testing
     const interval = setInterval(() => {
       if (!fallingLetter) {
@@ -496,9 +502,9 @@ export default function WordTetris() {
         moveLetterDown();
       }
     }, fallingSpeed);
-  
+
     return () => clearInterval(interval);
-  }, [fallingLetter, gameOver, gameStarted, fallingSpeed, spawnLetter, moveLetterDown]);
+  }, [fallingLetter, gameOver, gameStarted, paused, fallingSpeed, spawnLetter, moveLetterDown]);
 
 
   useEffect(() => {
@@ -1081,8 +1087,14 @@ export default function WordTetris() {
             onClick={handleDeselectAll}
             disabled={gameOver || selectedLetters.length === 0}
           >
-            Elimina selecció
+            Eliminar selecció
           </button>
+          <button
+          className={styles.pauseButton} // New class for pause button
+          onClick={handlePauseToggle}
+        >
+          {paused ? 'Jugar' : 'Pausar'}
+        </button>
         </div>
 
         <div className={styles.scoreboard}>
