@@ -275,6 +275,7 @@
   cursor: pointer !important;
   transition: background-color 0.3s ease, transform 0.2s ease !important;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1) !important;
+  margin-bottom: 10px;
 }
 
 .deselectButton:hover {
@@ -897,7 +898,8 @@ margin-top: 20px; /* Add margin to create space between scoreboard and button */
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-  margin-top: 10px; /* Space between the previous button */
+  margin-top: 2px; /* Space between the previous button */
+  margin-bottom: 10px; /* Space between the previous button */
 }
 
 .pauseButton:hover {

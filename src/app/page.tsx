@@ -948,6 +948,13 @@ export default function WordTetris() {
 {gameMode === 'Aprendre' && (
   <div className={styles.leftSidebar}>
     <div className={styles.helpBox}>
+    <h3>Pausa el joc</h3>
+    <button
+    className={styles.pauseButton}
+    onClick={handlePauseToggle}
+  >
+    {paused ? 'Jugar' : 'Pausar'}
+  </button>
       <h3>Paraules Suggerides</h3>
       <button
         className={`${styles.difficultyButton} ${styles.difficultyButtonFacil}`}
@@ -1090,10 +1097,10 @@ export default function WordTetris() {
             Eliminar selecció
           </button>
           <button
-          className={styles.pauseButton} // New class for pause button
-          onClick={handlePauseToggle}
+          className={`${styles.instructionsButton} ${styles.returnButton}`}
+          onClick={handleReturnToFirstPage}
         >
-          {paused ? 'Jugar' : 'Pausar'}
+          Torna enrere
         </button>
         </div>
 
