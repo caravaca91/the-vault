@@ -54,7 +54,9 @@ export default function WordTetris() {
   const [showInstructionsModal, setShowInstructionsModal] = useState(false);
   const router = useRouter();
 
-
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [showMobileModal, setShowMobileModal] = useState<boolean>(false);
+  
   const handleAliasSelection = async () => {
     if (userAlias.trim() !== "") {
       try {
@@ -289,7 +291,27 @@ export default function WordTetris() {
     }
   };
   
+  useEffect(() => {
+    // Check if the user is on a mobile device
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
 
+    handleResize(); // Run on initial load
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const handleMobileButtonClick = () => {
+    if (isMobile) {
+      setShowMobileModal(true);
+    }
+  };
+
+  
   useEffect(() => {
     const savedAlias = localStorage.getItem('currentUserAlias');
     const savedIdentifier = localStorage.getItem('currentUserIdentifier');
@@ -694,119 +716,153 @@ export default function WordTetris() {
   }
   
   
+  {showMobileModal && (
+    <div className={styles.validWordsModal}>
+      <button className={styles.closeButton} onClick={() => setShowMobileModal(false)}>
+        X
+      </button>
+      <p>
+        Lletris només es pot jugar en un ordinador de sobretaula ara per ara. Torna un altre dia per veure les novetats.
+      </p>
+    </div>
+  )}
+  
   
 
   if (!gameMode) {
     return (
       <div className={styles.difficultyContainer}>
-        <div className={styles.difficultyBox}>
-        <div className={styles.titleContainer} style={{ marginTop: '20px' }}>
-        <button className={`${styles.letterButton} ${styles.letterL1}`}>L</button>
-        <button className={`${styles.letterButton} ${styles.letterL2}`}>L</button>
-        <button className={`${styles.letterButton} ${styles.letterE}`}>E</button>
-        <button className={`${styles.letterButton} ${styles.letterT}`}>T</button>
-        <button className={`${styles.letterButton} ${styles.letterR}`}>R</button>
-        <button className={`${styles.letterButton} ${styles.letterI}`}>I</button>
-        <button className={`${styles.letterButton} ${styles.letterS}`}>S</button>
-      </div>
-      <div className={styles.difficultyButtons} style={{ marginTop: '70px' }}>
-      <div>
-    <button
-      className={`${styles.difficultyButton} ${styles.difficultyButtonFacil}`}
-      onClick={() => handleModeSelection('Aprendre')}
-    >
-      Aprendre
-    </button>
-  </div>
-  <div>
-    <button
-      className={`${styles.difficultyButton} ${styles.difficultyButtonDificil}`}
-      onClick={() => handleModeSelection('Competir')}
-    >
-      Competir
-    </button>
-  </div>
-  <div>
-    <button
-      className={styles.instructionsButton}
-      onClick={() => setShowInstructionsModal((prev) => !prev)}
-    >
-      Com s&apos;hi juga
-    </button>
-  </div>
-</div>
-
-
-          {/* Instructions Button */}
-        {showInstructionsModal && (
-        <div className={styles.validWordsModal}>
-          <button className={styles.closeButton} onClick={() => setShowInstructionsModal(false)}>
-            X
-          </button>
-          <div className={styles.instructionsModalContent}>
+        {/* Mobile Block Message Modal */}
+        {showMobileModal && (
+          <div className={styles.validWordsModal}>
+            <button className={styles.closeButton} onClick={() => setShowMobileModal(false)}>
+              X
+            </button>
             <p>
-              <strong>Com s&apos;hi juga:</strong>
+              Lletris només es pot jugar en un ordinador de sobretaula per ara. Torna un altre dia per comprovar les novetats.
             </p>
-            <ul>
-              <li>1. Selecciona les lletres clicant-hi o teclejant-les.</li>
-              <li>2. Envia la paraula trobada clicant &apos;Enter&apos; o amb el botó &apos;Enviar Paraula&apos;.</li>
-              <li>3. Les paraules trobades t&apos;atorgaran punts segons la seva llargada.</li>
-              <li>4. No deixis que les lletres t&apos;omplin el taulell!</li>
-            </ul>
           </div>
-        </div>
-      )}
-
-
-{/* Valid Words Button */}
-<div>
-  <button
-    className={`${styles.wordsFoundButton} ${styles.buttonHoverEffect}`}
-    onClick={toggleValidWordsModal}
-    style={{
-      backgroundColor: 'rgb(245, 130, 130)', // Pink color
-      marginTop: '20px', // Additional space above the button
-      marginBottom: '20px' // Additional space below the button
-    }}
-  >
-    Paraules vàlides
-  </button>
-</div>
-
-{showValidWordsModal && (
-  <div className={styles.validWordsModal}>
-    <button className={styles.closeButton} onClick={toggleValidWordsModal} aria-label="Close">
-      X
-    </button>
-    <p>
-      Lletris funciona amb el Diccionari de l’Scrabble (DISC). Si vols saber què és el DISC, fes clic{' '}
-      <a
-        href="https://diccionari.totescrable.cat/que-es/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className={styles.link} // Add this class to style the link consistently
-      >
-        aquí
-      </a>.
-    </p>
-  </div>
-)}
-
-
+        )}
+  
+        <div className={styles.difficultyBox}>
+          <div className={styles.titleContainer} style={{ marginTop: '20px' }}>
+            <button className={`${styles.letterButton} ${styles.letterL1}`}>L</button>
+            <button className={`${styles.letterButton} ${styles.letterL2}`}>L</button>
+            <button className={`${styles.letterButton} ${styles.letterE}`}>E</button>
+            <button className={`${styles.letterButton} ${styles.letterT}`}>T</button>
+            <button className={`${styles.letterButton} ${styles.letterR}`}>R</button>
+            <button className={`${styles.letterButton} ${styles.letterI}`}>I</button>
+            <button className={`${styles.letterButton} ${styles.letterS}`}>S</button>
+          </div>
+  
+          <div className={styles.difficultyButtons} style={{ marginTop: '70px' }}>
+            <div>
+              <button
+                className={`${styles.difficultyButton} ${styles.difficultyButtonFacil}`}
+                onClick={() => {
+                  if (isMobile) {
+                    handleMobileButtonClick();
+                  } else {
+                    handleModeSelection('Aprendre');
+                  }
+                }}
+              >
+                Aprendre
+              </button>
+            </div>
+            <div>
+              <button
+                className={`${styles.difficultyButton} ${styles.difficultyButtonDificil}`}
+                onClick={() => {
+                  if (isMobile) {
+                    handleMobileButtonClick();
+                  } else {
+                    handleModeSelection('Competir');
+                  }
+                }}
+              >
+                Competir
+              </button>
+            </div>
+            <div>
+              <button
+                className={styles.instructionsButton}
+                onClick={() => setShowInstructionsModal((prev) => !prev)}
+              >
+                Com s&apos;hi juga
+              </button>
+            </div>
+          </div>
+  
+          {/* Instructions Button */}
+          {showInstructionsModal && (
+            <div className={styles.validWordsModal}>
+              <button className={styles.closeButton} onClick={() => setShowInstructionsModal(false)}>
+                X
+              </button>
+              <div className={styles.instructionsModalContent}>
+                <p>
+                  <strong>Com s&apos;hi juga:</strong>
+                </p>
+                <ul>
+                  <li>1. Selecciona les lletres clicant-hi o teclejant-les.</li>
+                  <li>2. Envia la paraula trobada clicant &apos;Enter&apos; o amb el botó &apos;Enviar Paraula&apos;.</li>
+                  <li>3. Les paraules trobades t&apos;atorgaran punts segons la seva llargada.</li>
+                  <li>4. No deixis que les lletres t&apos;omplin el taulell!</li>
+                </ul>
+              </div>
+            </div>
+          )}
+  
+          {/* Valid Words Button */}
+          <div>
+            <button
+              className={`${styles.wordsFoundButton} ${styles.buttonHoverEffect}`}
+              onClick={toggleValidWordsModal}
+              style={{
+                backgroundColor: 'rgb(245, 130, 130)', // Pink color
+                marginTop: '20px', // Additional space above the button
+                marginBottom: '20px', // Additional space below the button
+              }}
+            >
+              Paraules vàlides
+            </button>
+          </div>
+  
+          {showValidWordsModal && (
+            <div className={styles.validWordsModal}>
+              <button className={styles.closeButton} onClick={toggleValidWordsModal} aria-label="Close">
+                X
+              </button>
+              <p>
+                Lletris funciona amb el Diccionari de l’Scrabble (DISC). Si vols saber què és el DISC, fes clic{' '}
+                <a
+                  href="https://diccionari.totescrable.cat/que-es/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.link} // Add this class to style the link consistently
+                >
+                  aquí
+                </a>.
+              </p>
+            </div>
+          )}
+  
           {/* Buy Me a Coffee Button */}
-<div className={styles.coffeeButtonContainer}>
-<button
-    className={`${styles.difficultyButton} ${styles.coffeeButton} ${styles.buttonHoverEffect}`}
-    onClick={() => window.open('https://www.buymeacoffee.com/marticabanes', '_blank')}
-    style={{ backgroundColor: 'rgb(199, 139, 235)' }} // Purple color
-  >
-    Ajuda&apos;ns a créixer
-  </button>
-</div>
+          <div className={styles.coffeeButtonContainer}>
+            <button
+              className={`${styles.difficultyButton} ${styles.coffeeButton} ${styles.buttonHoverEffect}`}
+              onClick={() => window.open('https://www.buymeacoffee.com/marticabanes', '_blank')}
+              style={{ backgroundColor: 'rgb(199, 139, 235)' }} // Purple color
+            >
+              Ajuda&apos;ns a créixer
+            </button>
+          </div>
         </div>
       </div>
     );
   }
+  
 
   if (gameMode === 'Aprendre' && !difficultySelected) {
     return (
