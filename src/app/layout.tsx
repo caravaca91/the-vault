@@ -15,8 +15,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Lletris",
-  description: "El joc de paraules que cauen",
+  title: "Vault 899 - Challenge Your Word Skills",
+  description: "Embark on a daily word puzzle adventure in Vault 899.",
 };
 
 export default function RootLayout({

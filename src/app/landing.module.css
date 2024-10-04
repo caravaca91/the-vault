@@ -1,0 +1,171 @@
+/* Container for the landing page, centered vertically and horizontally */
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px; /* Padding for better spacing on smaller screens */
+  min-height: 100vh;
+  background-color: #000; /* Black background for retro look */
+  color: #33ff33; /* Retro green text color */
+  font-family: 'Courier New', Courier, monospace; /* Monospaced font for a retro look */
+  box-sizing: border-box; /* Ensure padding does not affect layout */
+}
+
+/* Main content box for the landing page */
+.mainContent {
+  text-align: center;
+  background-color: #111; /* Slightly lighter black for content box */
+  padding: 30px 20px;
+  border-radius: 10px;
+  border: 2px solid #33ff33; /* Green border for retro look */
+  box-shadow: 0 0 10px #33ff33; /* Neon glow effect */
+  max-width: 600px; /* Maximum width for larger screens */
+  width: 100%; /* Full width for smaller screens */
+}
+
+/* Title of the landing page */
+.title {
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+  color: #33ff33; /* Fluorescent green for the title */
+  text-shadow: 0 0 10px #33ff33; /* Glow effect for the title */
+}
+
+/* Instructions box for listing the game rules */
+.instructionsBox {
+  background-color: #000; /* Black background for the instruction box */
+  padding: 20px;
+  border-radius: 8px;
+  border: 2px solid #33ff33; /* Green border to match the retro theme */
+  box-shadow: 0 0 10px #33ff33; /* Glow effect */
+  margin-bottom: 30px;
+}
+
+/* Subtitle for the instructions box */
+.subtitle {
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  color: #33ff33;
+}
+
+/* List of instructions */
+.instructionList {
+  list-style-type: none;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1.8;
+  text-align: left;
+}
+
+.instructionList li {
+  margin-bottom: 15px;
+  color: #33ff33; /* Green text for each list item */
+}
+
+/* Nested list for color explanation */
+.instructionList li ul {
+  margin-top: 10px;
+  margin-left: 20px;
+}
+
+.instructionList li ul li {
+  margin-bottom: 10px;
+}
+
+/* Instructions text at the end */
+.instructionsText {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #33ff33;
+  margin-top: 20px;
+}
+
+/* Start button styling */
+.startButton {
+  padding: 15px 30px;
+  background-color: #000; /* Black background for retro style */
+  color: #33ff33; /* Green text for button */
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: 2px solid #33ff33; /* Green border */
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  text-shadow: 0 0 5px #33ff33; /* Glow effect */
+  margin-bottom: 30px;
+}
+
+.startButton:hover {
+  background-color: #111; /* Slightly lighter black on hover */
+  box-shadow: 0 0 15px #00ff00; /* Stronger glow when hovered */
+  color: #00ff00; /* Lighter green for more emphasis */
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .instructionsText, .instructionList {
+    font-size: 0.9rem;
+  }
+
+  .instructionsBox {
+    padding: 15px;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+  }
+
+  .startButton {
+    font-size: 1.3rem;
+    padding: 12px 25px;
+  }
+}
+
+/* Stats box for displaying game statistics */
+.statsBox {
+  background-color: #000; /* Black background for the stats box */
+  padding: 20px;
+  border-radius: 8px;
+  border: 2px solid #33ff33; /* Green border to match the retro theme */
+  box-shadow: 0 0 10px #33ff33; /* Glow effect */
+  margin-bottom: 30px;
+}
+
+/* Subtitle for the stats box */
+.statsSubtitle {
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  color: #33ff33;
+}
+
+/* Stats content text styling */
+.statsText {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #33ff33;
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+/* Styles for the ad-free note */
+.adFreeNote {
+  text-align: right; /* Align the text to the right */
+  font-size: 1rem;
+  margin-top: 15px;
+  color: #33ff33; /* Match the retro green text color */
+}
+
+/* Styling for the link */
+.link {
+  text-decoration: underline; /* Underline the link */
+  color: #33ff33; /* Match the retro green text color */
+  transition: color 0.3s ease; /* Add a slight transition effect for hover */
+}
+
+.link:hover {
+  color: #00ff00; /* Change the link color to a lighter green on hover */
+}
