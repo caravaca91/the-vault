@@ -78,10 +78,9 @@ const LandingPage: React.FC = () => {
           <div className={styles.statsBox}>
             <h2 className={styles.subtitle}>Stats:</h2>
             <p>
-              Today, <strong>{stats.todayCount}</strong> people have solved the Vault.<br />
-              The average time taken was <strong>{stats.averageTime}</strong>.<br />
-              The fastest solution today was completed in <strong>{stats.fastestTime}</strong>.<br />
-              The record number of Vault solves in a day was <strong>{stats.recordCount}</strong> on <strong>{stats.recordDay}</strong>.
+              Today, <strong>{stats.todayCount}</strong> people have opened the Vault.<br />
+              The fastest, did it in <strong>{stats.fastestTime}</strong>.<br />
+              The record number of Vault openings in a day was <strong>{stats.recordCount}</strong> on <strong>{stats.recordDay}</strong>.
             </p>
           </div>
         )}

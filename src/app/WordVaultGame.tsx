@@ -199,18 +199,21 @@ useEffect(() => {
   const handleKeyPress = useCallback(
     (event: KeyboardEvent) => {
       const key = event.key.toUpperCase();
-      if (key === 'BACKSPACE') {
-        setSelectedLetters((prevSelected) => prevSelected.slice(0, -1));
+      if (key === 'BACKSPACE' && selectedLetters.length > 0) {
+        const lastSelected = selectedLetters[selectedLetters.length - 1]; // Get the last selected letter
+  
+        setSelectedLetters((prevSelected) => prevSelected.slice(0, -1)); // Remove the last selected letter
+  
         setGrid((prevGrid) =>
-          prevGrid.map((row) =>
-            row.map((cell) => {
+          prevGrid.map((row, rowIndex) =>
+            row.map((cell, colIndex) => {
               if (
+                rowIndex === lastSelected.row &&
+                colIndex === lastSelected.col &&
                 cell.selected &&
-                selectedLetters.length > 0 &&
-                selectedLetters[selectedLetters.length - 1].char === cell.char &&
                 !cell.correct
               ) {
-                return { ...cell, selected: false };
+                return { ...cell, selected: false }; // Deselect only the last selected cell
               }
               return cell;
             })
@@ -227,6 +230,7 @@ useEffect(() => {
     },
     [selectedLetters, grid]
   );
+  
 
   const findGridCell = (char: string) => {
     for (let row = 0; row < grid.length; row++) {
@@ -442,7 +446,7 @@ useEffect(() => {
   
         <div className={styles.selectedLetters}>
           <h3>
-            Letters Selected: <br />
+            Selected Letters: <br />
             <span className={styles.selectedLettersContent}>
               {selectedLetters.map((l) => l.char).join('')}
             </span>
