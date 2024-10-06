@@ -329,6 +329,8 @@
     height: calc(90vw / 8 - 4px); /* Maintain square shape */
     font-size: calc(90vw / 16); /* Reduce font size for smaller cells */
     padding: 2px;
+    overflow: hidden; /* Ensure content doesn't overflow beyond the cell */
+    box-sizing: border-box; /* Include border and padding in width/height */
   }
 
   /* Centering the System Log */
@@ -456,4 +458,9 @@
     margin-right: 0; /* Remove right margin */
     color: #33ff33; /* Maintain the retro green color */
   }
+
+.selected {
+    transform: none !important; /* Remove scaling to avoid overflow */
+    border: 2px solid #00ff00 !important; /* Use a thicker border to indicate selection */
+}
 }
