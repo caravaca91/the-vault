@@ -16,9 +16,10 @@ const LandingPage: React.FC = () => {
   const router = useRouter();
   const [currentDay, setCurrentDay] = useState<number>(1);
   const [stats, setStats] = useState<Stats | null>(null);
+  const [timeRemaining, setTimeRemaining] = useState<string>(''); // State to store time remaining until next vault
 
   const calculateDayDifference = (): number => {
-    const startDate = new Date('2024-10-04');
+    const startDate = new Date('2024-10-07');
     const today = new Date();
     return Math.floor((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
   };
@@ -37,6 +38,18 @@ const LandingPage: React.FC = () => {
     return `${month}-${day}-${year}`;
   };
 
+  const calculateTimeRemaining = () => {
+    const now = new Date();
+    const nextMidnight = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
+    const timeDiff = nextMidnight.getTime() - now.getTime();
+
+    const hours = String(Math.floor((timeDiff / (1000 * 60 * 60)) % 24)).padStart(2, '0');
+    const minutes = String(Math.floor((timeDiff / (1000 * 60)) % 60)).padStart(2, '0');
+    const seconds = String(Math.floor((timeDiff / 1000) % 60)).padStart(2, '0');
+
+    return `${hours}:${minutes}:${seconds}`;
+  };
+
   useEffect(() => {
     const dayDifference = calculateDayDifference();
 
@@ -45,9 +58,12 @@ const LandingPage: React.FC = () => {
       setCurrentDay(dayDifference);
     }
 
-    // Fetch the stats from the API
+    // Fetch the stats from the API with a fake delay
     const fetchStats = async () => {
       try {
+        // Add a fake delay of 2 seconds
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
         const response = await fetch('/api/vault-stats-summary');
         if (response.ok) {
           const data = await response.json();
@@ -63,6 +79,14 @@ const LandingPage: React.FC = () => {
     };
 
     fetchStats();
+
+    // Update the timer every second
+    const timer = setInterval(() => {
+      setTimeRemaining(calculateTimeRemaining());
+    }, 1000);
+
+    // Clear interval on component unmount
+    return () => clearInterval(timer);
   }, []);
 
   const handleStartGame = () => {
@@ -74,16 +98,21 @@ const LandingPage: React.FC = () => {
       <div className={styles.mainContent}>
         <h1 className={styles.title}>Vault 899</h1>
 
-        {stats && (
-          <div className={styles.statsBox}>
-            <h2 className={styles.subtitle}>Stats:</h2>
+        <div className={styles.statsBox}>
+          {stats ? (
             <p>
-              Today, <strong>{stats.todayCount}</strong> people have opened the Vault.<br />
-              The fastest, did it in <strong>{stats.fastestTime}</strong>.<br />
-              The record number of Vault openings in a day was <strong>{stats.recordCount}</strong> on <strong>{stats.recordDay}</strong>.
-            </p>
-          </div>
-        )}
+            Today, <strong>{stats.todayCount}</strong> {stats.todayCount === 1 ? 'person' : 'people'} have opened the Vault.<br />
+            {stats.todayCount > 0 && (
+              <>
+                The fastest did it in <strong>{stats.fastestTime}</strong>.<br />
+              </>
+            )}
+            The record number of Vault openings in a day was <strong>{stats.recordCount}</strong> on <strong>{stats.recordDay}</strong>.
+          </p>
+          ) : (
+            <p>Loading stats...</p>
+          )}
+        </div>
 
         <button className={styles.startButton} onClick={handleStartGame}>
           Start Game
@@ -92,9 +121,10 @@ const LandingPage: React.FC = () => {
         <div className={styles.instructionsBox}>
           <h2 className={styles.subtitle}>How to Play:</h2>
           <ul className={styles.instructionList}>
-            <li>Find <strong>7 unique words</strong> between <strong>4 to 10</strong> letters using <strong>exactly</strong> all the letters from the grid.</li>
-            <li>The game will run for <strong>899 days</strong>. Every day a new unique solution is computationally generated.</li>
+            <li>Find <strong>5 unique words</strong> <strong>of 5 letters</strong> using <strong>exactly</strong> all the letters from the grid and moving them into <strong>the Vault. </strong>
+             The game will run for <strong>899 days</strong>. Every day a new unique solution is computationally generated.</li>
             <li>This is <strong>Day {currentDay} of 899</strong>.</li>
+            <li>The next vault opens in: <strong>{timeRemaining}</strong>.</li>
             <li>Words can be:
               <ul>
                 <li><strong>Valid Words</strong>: Existing words in English. Letters are colored for hints:
@@ -107,15 +137,15 @@ const LandingPage: React.FC = () => {
                 <li><strong>Solution Words</strong>: Unique words that complete the puzzle. Letters disappear from the grid when found.</li>
               </ul>
             </li>
-            <li>Move words back to the grid by clicking the <strong>arrow</strong> next to them. Solution words stay in the vault.</li>
-            <li>Input words using the keyboard and pressing <strong>Enter</strong>, or by selecting with the cursor and clicking <strong>Move word to the vault</strong>. In your phone, only the second option is available. </li>
-            <li>{'The timer starts when you click "Start Game". Solve the puzzle in the '}<strong>least time possible</strong>.</li>
-            </ul>
+            <li>Input words using the keyboard and pressing <strong>Enter</strong>, or by selecting with the cursor and clicking <strong>Submit Word</strong>. In your phone, only the second option is available. </li>
+            <li>Move words back to the grid by clicking on <strong>Return Word</strong> below them. Solution words <strong>automatically stay</strong> in the vault.</li>
+            <li>{'The timer starts when you click "Start Game". You have unlimited attempts, but we count them. Solve the puzzle in the '}<strong>fewest attempts and shortest time possible</strong>.</li>
+          </ul>
           <p className={styles.instructionsText}>Are you ready?</p>
 
           <p className={styles.adFreeNote}>
-          Game by <a href="https://buymeacoffee.com/marticabanes" target="_blank" rel="noopener noreferrer" className={styles.link}>MCC</a>
-        </p>
+            Game by <a href="https://buymeacoffee.com/marticabanes" target="_blank" rel="noopener noreferrer" className={styles.link}>MCC</a>
+          </p>
         </div>
       </div>
     </div>
@@ -123,3 +153,4 @@ const LandingPage: React.FC = () => {
 };
 
 export default LandingPage;
+

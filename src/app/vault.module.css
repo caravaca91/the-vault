@@ -10,6 +10,13 @@
   color: #33ff33; /* Retro green text */
 }
 
+/* Shared alignment container to ensure all elements start from the same place */
+.alignmentContainer {
+  width: fit-content; /* Ensure width fits content size */
+  margin-left: auto; /* Align the container to the left margin */
+  margin-right: auto; /* Center it if necessary */
+}
+
 /* Grid container */
 .gridContainer {
   display: grid;
@@ -21,7 +28,7 @@
   border-radius: 8px;
   padding: 10px;
   box-shadow: 0 0 10px #33ff33; /* Neon glow effect */
-  margin-bottom: 20px; /* Space below the grid */
+  margin-bottom: 5px; /* Space below the grid */
   margin-top: 20px;
   width: fit-content; /* Ensures grid fits content size */
 }
@@ -136,8 +143,12 @@
   cursor: pointer;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   text-shadow: 0 0 5px #33ff33; /* Glow effect */
-  margin: 0 auto; /* Center the button horizontally */
-  display: block; /* Required for centering with margin auto */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto; /* Center the button horizontally */
 }
 
 .submitButton:hover {
@@ -227,33 +238,16 @@
   cursor: pointer;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   text-shadow: 0 0 5px #33ff33; /* Glow effect */
+  width: fit-content; /* Adjust width to fit content */
+  margin: 10px auto; /* Center the button horizontally */
+  display: flex; /* Align items inside the button */
+  justify-content: center; /* Center the content inside the button */
+  align-items: center; /* Vertically center the content */
 }
 
 .returnButton:hover {
   background-color: #111; /* Slightly lighter black */
   box-shadow: 0 0 15px #00ff00; /* Stronger glow when hovered */
-}
-
-/* Return Arrow Styling */
-.returnArrow {
-  background-color: transparent;
-  border: none;
-  color: #00ff00; /* Bright green to make it more visible */
-  font-size: 24px; /* Larger size for visibility */
-  cursor: pointer;
-  transition: color 0.3s ease, transform 0.2s ease;
-  visibility: hidden; /* Hide the arrow but keep the space occupied */
-
-}
-
-.returnArrow:hover {
-  color: #ffff33; /* Change color on hover for emphasis */
-  transform: scale(1.2); /* Slight enlargement on hover */
-}
-
-
-.returnArrow.visible {
-  visibility: visible; /* Make the arrow visible when needed */
 }
 
 /* Vault Title Styling */
@@ -266,7 +260,22 @@
   margin-top: 10px; /* Space above the title */
 }
 
-/* Responsive Design for Mobile */
+.gridAndButtonContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center both the grid and the button horizontally */
+  margin-bottom: 20px; /* Space below the entire container */
+  margin-left: 0; /* Align to the left */
+}
+
+/* Attempts Count Styling */
+.attemptsCount {
+  font-weight: bold;
+  font-size: 1.2rem; /* Adjust size as needed */
+  color: #33ff33; /* Retro green text */
+  text-align: center;
+  margin-bottom: 10px; /* Space below the attempts count */
+}
 /* Responsive Design for Mobile */
 @media (max-width: 768px) {
   .container {
@@ -275,8 +284,24 @@
     align-items: center;
     justify-content: flex-start;
     padding: 10px;
+    gap: 20px; /* Reduced gap for a more compact layout */
     height: auto; /* Allow height to adjust */
     overflow-y: auto; /* Allow scrolling if needed */
+  }
+
+  .returnButton {
+    padding: 10px;
+    background-color: #000; /* Black background for retro style */
+    color: #33ff33; /* Green text */
+    font-size: 14px;
+    font-weight: bold;
+    border: 2px solid #33ff33; /* Green border */
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    text-shadow: 0 0 5px #33ff33; /* Glow effect */
+    width: fit-content; /* Adjust width to fit content */
+    margin: 10px auto; /* Center the button horizontally */
   }
 
   /* Center the timer */
@@ -295,6 +320,7 @@
     width: 90vw; /* Ensure the grid fits the screen width */
     max-width: 90vw;
     gap: 3px; /* Reduce the gap between cells */
+    margin-bottom: 10;
   }
 
   /* Individual grid cell */
@@ -355,8 +381,16 @@
     gap: 10px;
   }
 
+  .attemptsCount {
+    font-size: 1rem; /* Smaller font size for mobile */
+    text-align: center; /* Center the attempts count */
+    margin-top: 10px; /* Space above the attempts count */
+    margin-right: 0; /* Remove right margin */
+  }
+
   .submitButton {
     padding: 10px;
+    margin-top: 5px; /* Reduce space above the button */
     font-size: 1rem;
     background-color: #000; /* Retro black background */
     color: #33ff33; /* Green text for button */
@@ -375,10 +409,11 @@
 /* Vault section styling for mobile */
 .vaultSection {
   display: flex;
-  justify-content: flex-end; /* Align the vault to the right */
+  justify-content: center; /* Align the vault to the center */
   margin-bottom: 10px;
-  width: 90vw; /* Restrict width for better alignment */
-  padding-right: 5px; /* Add some spacing from the right edge */
+  width: fit-content; /* Adjust width to fit content size */
+  margin-left: auto; /* Center the vault section */
+  margin-right: auto; /* Center the vault section */
 }
 
 /* Vault grid styled like the main grid, removing the background */
@@ -414,19 +449,11 @@
   }
 
 
-  .returnArrow {
-    font-size: 16px; /* Adjust size to fit with smaller cells */
-    margin-right: 0; /* Remove extra spacing */
-    color: #00ff00; /* Bright green to ensure visibility */
-    cursor: pointer;
-    transition: color 0.3s ease, transform 0.2s ease;
-  }
-
   .vaultTitle {
     font-size: 1.0rem; /* Reduce font size for mobile */
-    text-align: right; /* Align the title to the right */
+    text-align: center; /* Align the title to the center */
     margin-top: 10px; /* Add a small margin for spacing */
-    margin-right: 15x; /* Add padding to separate from the edge */
+    margin-right: 0; /* Remove right margin */
     color: #33ff33; /* Maintain the retro green color */
   }
 }

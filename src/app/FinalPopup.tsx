@@ -5,11 +5,12 @@ interface FinalPopupProps {
   onClose: () => void;
   finalTime: string;
   currentDay: number; // Add current day as a prop to include in the share message
+  attempts: number; // Add attempts as a prop
 }
 
-const FinalPopup: React.FC<FinalPopupProps> = ({ onClose, finalTime, currentDay }) => {
+const FinalPopup: React.FC<FinalPopupProps> = ({ onClose, finalTime, currentDay, attempts }) => {
   const shareUrl = 'https://vault899.com'; // URL to share
-  const shareMessage = `I have solved the Vault ${currentDay}/899 in ${finalTime}! Can you solve it too? Play now at ${shareUrl} #Vault899`;
+  const shareMessage = `I have solved the Vault ${currentDay}/899 in ${finalTime} with ${attempts} attempts! Can you solve it too? Play now at ${shareUrl} #Vault899`;
 
   const handleShare = () => {
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareMessage)}`;
@@ -25,6 +26,8 @@ const FinalPopup: React.FC<FinalPopupProps> = ({ onClose, finalTime, currentDay 
           <strong>The world is now a better place.</strong>
         </p>
         <p className={styles.finalTime}>Time taken: {finalTime}</p>
+        <p className={styles.finalTime}>Attempts: <strong>{attempts}</strong>
+        </p>
         <p className={styles.adFreeNote}>
           Game by <a href="https://buymeacoffee.com/marticabanes" target="_blank" rel="noopener noreferrer" className={styles.link}>MCC</a>.
         </p>

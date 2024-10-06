@@ -1,0 +1,55 @@
+/* Container for the completed page, centered vertically and horizontally */
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px; /* Padding for better spacing on smaller screens */
+  min-height: 100vh;
+  background-color: #000; /* Black background for retro look */
+  color: #33ff33; /* Retro green text color */
+  font-family: 'Courier New', Courier, monospace; /* Monospaced font for a retro look */
+  box-sizing: border-box; /* Ensure padding does not affect layout */
+}
+
+/* Main content box for the completed page */
+.mainContent {
+  text-align: center;
+  background-color: #111; /* Slightly lighter black for content box */
+  padding: 30px 20px;
+  border-radius: 10px;
+  border: 2px solid #33ff33; /* Green border for retro look */
+  box-shadow: 0 0 10px #33ff33; /* Neon glow effect */
+  max-width: 600px; /* Maximum width for larger screens */
+  width: 100%; /* Full width for smaller screens */
+}
+
+/* Title for the completed page */
+.title {
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+  color: #33ff33; /* Fluorescent green for the title */
+  text-shadow: 0 0 10px #33ff33; /* Glow effect for the title */
+}
+
+/* Countdown text styling */
+.countdown {
+  font-size: 1.5rem;
+  margin-top: 20px;
+  color: #33ff33; /* Green color to match the retro theme */
+  text-shadow: 0 0 5px #33ff33; /* Glow effect */
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .countdown {
+    font-size: 1.2rem;
+  }
+
+  .mainContent {
+    padding: 20px;
+  }
+}
