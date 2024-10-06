@@ -101,7 +101,7 @@ const LandingPage: React.FC = () => {
         <div className={styles.statsBox}>
           {stats ? (
             <p>
-            Today, <strong>{stats.todayCount}</strong> {stats.todayCount === 1 ? 'person' : 'people'} have opened the Vault.<br />
+            Today, <strong>{stats.todayCount}</strong> {stats.todayCount === 1 ? 'person has' : 'people have'} opened the Vault.<br />
             {stats.todayCount > 0 && (
               <>
                 The fastest did it in <strong>{stats.fastestTime}</strong>.<br />
