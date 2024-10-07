@@ -267,7 +267,7 @@ useEffect(() => {
   const handleSubmitWord = () => {
     setAttempts((prevAttempts) => prevAttempts + 1); // Increment attempt count
     const selectedWord = selectedLetters.map((l) => l.char).join('');
-  
+
     // Check if the word length is exactly 5 letters
     if (selectedWord.length !== 5) {
       setGameMessage('Only 5-letter words are allowed!');
@@ -275,6 +275,7 @@ useEffect(() => {
       return;
     }
   
+    
     if (selectedWord === '') {
       setGameMessage('No letters selected!');
       resetSelection();
@@ -289,6 +290,11 @@ useEffect(() => {
   
     // Check if the word matches one of the solution words
     const wordIndex = solutionChain.indexOf(selectedWord);
+    if (wordIndex !== -1 && foundWords[wordIndex]?.every((letter) => letter.color === 'green')) {
+      setGameMessage('Word already found!');
+      resetSelection();
+      return;
+    }
   
     // Prepare the word to be added to all vault rows, regardless of whether it's a solution or not
     const vaultEntries: { [key: number]: VaultLetter[] } = {};
