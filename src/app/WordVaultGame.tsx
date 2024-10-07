@@ -124,7 +124,7 @@ useEffect(() => {
     const dayDifference = Math.floor((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
 
     // Use `dayDifference - 1` to load the correct CSV row (e.g., day 2 -> row index 1)
-    const dayIndex = Math.min(Math.max(dayDifference, 0), 898);
+    const dayIndex = Math.min(Math.max(dayDifference, 0), 901);
 
     setCurrentDay(dayDifference); // Set the current day for display
 
