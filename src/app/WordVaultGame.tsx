@@ -122,8 +122,6 @@ const WordVaultGame: React.FC = () => {
       // Select the first 5 words
       const selectedWords = words.slice(0, 5);
 
-      console.log(`Generated word chain: ${selectedWords.join(', ')}`);
-
       
       // Convert to uppercase for consistency with your previous approach
       return selectedWords.map(word => word.toUpperCase());
