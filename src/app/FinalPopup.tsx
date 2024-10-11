@@ -1,4 +1,4 @@
-import styles from './FinalPopup.module.css';
+import styles from './finalPopup.module.css';
 import React from 'react';
 
 
