@@ -1,0 +1,65 @@
+.timeCapsule {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .title {
+    color: #33ff33;
+    margin-bottom: 10px;
+  }
+  
+  .scrollContainer {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 10px;
+  }
+  
+  .guessEntry {
+    margin-bottom: 5px;
+    padding: 5px;
+    cursor: pointer;
+    color: #33ff33;
+  }
+  
+  .guessEntry:hover {
+    background-color: rgba(51, 255, 51, 0.1);
+  }
+  
+  .selected {
+    background-color: rgba(51, 255, 51, 0.2);
+    font-weight: bold;
+  }
+  
+  .navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .navButton {
+    background-color: #33ff33;
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .navButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .returnButton {
+    background-color: #33ff33;
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .returnButton:hover,
+  .navButton:hover:not(:disabled) {
+    background-color: #2ecc71;
+  }

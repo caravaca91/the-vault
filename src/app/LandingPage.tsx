@@ -18,9 +18,14 @@ const LandingPage: React.FC = () => {
   const [stats, setStats] = useState<Stats | null>(null);
   const [timeRemaining, setTimeRemaining] = useState<string>(''); // State to store time remaining until next vault
 
+
+  const [hasSolvedToday, setHasSolvedToday] = useState<boolean>(false);
+
   const calculateDayDifference = (): number => {
     const startDate = new Date('2024-10-07');
+    startDate.setHours(0, 0, 0, 0);  // Set to start of day in local time
     const today = new Date();
+    today.setHours(0, 0, 0, 0);  // Set to start of day in local time
     return Math.floor((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
   };
 
@@ -40,15 +45,26 @@ const LandingPage: React.FC = () => {
 
   const calculateTimeRemaining = () => {
     const now = new Date();
-    const nextMidnight = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
+    const nextMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
     const timeDiff = nextMidnight.getTime() - now.getTime();
-
+  
     const hours = String(Math.floor((timeDiff / (1000 * 60 * 60)) % 24)).padStart(2, '0');
     const minutes = String(Math.floor((timeDiff / (1000 * 60)) % 60)).padStart(2, '0');
     const seconds = String(Math.floor((timeDiff / 1000) % 60)).padStart(2, '0');
-
+  
     return `${hours}:${minutes}:${seconds}`;
   };
+
+
+  useEffect(() => {
+    const checkSolveStatus = () => {
+      const lastSolvedDate = localStorage.getItem('lastSolvedDate');
+      const today = new Date().toISOString().split('T')[0];
+      setHasSolvedToday(lastSolvedDate === today);
+    };
+  
+    checkSolveStatus();
+  }, []);
 
   useEffect(() => {
     const dayDifference = calculateDayDifference();
@@ -89,9 +105,14 @@ const LandingPage: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const handleStartGame = () => {
-    router.push('/game'); // Navigate to the game page
-  };
+const handleStartGame = () => {
+  if (!hasSolvedToday) {
+    router.push('/game');
+  } else {
+    // Optionally, you can show an alert or some other notification
+    alert("You've already opened today's Vault. Come back tomorrow for a new one!");
+  }
+};
 
   return (
     <div className={styles.container}>
@@ -114,9 +135,13 @@ const LandingPage: React.FC = () => {
           )}
         </div>
 
-        <button className={styles.startButton} onClick={handleStartGame}>
-          Start Game
-        </button>
+        <button 
+        className={styles.startButton} 
+        onClick={handleStartGame}
+        disabled={hasSolvedToday}
+      >
+        {hasSolvedToday ? "Vault already opened today!" : "Start Game"}
+      </button>
 
         <div className={styles.instructionsBox}>
           <h2 className={styles.subtitle}>How to Play:</h2>
@@ -138,7 +163,7 @@ const LandingPage: React.FC = () => {
               </ul>
             </li>
             <li>Input words using the keyboard and pressing <strong>Enter</strong>, or by selecting with the cursor and clicking <strong>Submit Word</strong>. In your phone, only the second option is available. </li>
-            <li>Move words back to the grid by clicking on <strong>Return Word</strong> below them. Solution words <strong>automatically stay</strong> in the vault.</li>
+            <li>Move words back to the grid by clicking on <strong>Return Word</strong> below them. Solution words <strong>automatically stay</strong> in the vault. The <strong>time capsule</strong> allows you to check the hints of previous valid words.</li>
             <li>{'The timer starts when you click "Start Game". You have unlimited attempts, but we count them. Solve the puzzle in the '}<strong>fewest attempts and shortest time possible</strong>.</li>
           </ul>
           <p className={styles.instructionsText}>Are you ready?</p>

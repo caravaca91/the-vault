@@ -2,9 +2,10 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import styles from './vault.module.css';
-import FinalPopup from './FinalPopup'; // Import the FinalPopup component
+import FinalPopup from './FinalPopup'; // Adjust the path if necessary
 import { useRouter } from 'next/navigation';
 import seedrandom from 'seedrandom';
+import TimeCapsule from './TimeCapsule'; // Adjust the path if necessary
 
 
 
@@ -26,6 +27,11 @@ interface SelectedLetter {
   col: number;
 }
 
+interface GuessedWord {
+  word: string;
+  hints: VaultLetter[][];  // Array of hint arrays, one for each solution word
+}
+
 const WordVaultGame: React.FC = () => {
   const [grid, setGrid] = useState<GridCell[][]>([]);
   const [selectedLetters, setSelectedLetters] = useState<SelectedLetter[]>([]);
@@ -40,7 +46,39 @@ const WordVaultGame: React.FC = () => {
   const [finalTime, setFinalTime] = useState<string>('');
   const router = useRouter(); // Use Next.js router for navigation
   const [currentDay, setCurrentDay] = useState<number>(1);
+  const [guessedWords, setGuessedWords] = useState<GuessedWord[]>([]);
+  const [currentGuessIndex, setCurrentGuessIndex] = useState<number | null>(null);
+  const [currentStreak, setCurrentStreak] = useState<number>(0);
+  const [maxStreak, setMaxStreak] = useState<number>(0);
+
+  const updateStreak = () => {
+    const lastSolvedDate = localStorage.getItem('lastSolvedDate');
+    const today = new Date().toISOString().split('T')[0];
   
+    if (lastSolvedDate === today) {
+      return; // Already solved today, don't update streak
+    }
+  
+    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+    
+    let newStreak;
+    if (lastSolvedDate === yesterday) {
+      // Continued streak
+      newStreak = currentStreak + 1;
+    } else {
+      // Streak broken or first solve
+      newStreak = 1;
+    }
+  
+    const newMaxStreak = Math.max(maxStreak, newStreak);
+  
+    setCurrentStreak(newStreak);
+    setMaxStreak(newMaxStreak);
+  
+    localStorage.setItem('lastSolvedDate', today);
+    localStorage.setItem('currentStreak', newStreak.toString());
+    localStorage.setItem('maxStreak', newMaxStreak.toString());
+  };
 
   const hasValidWordsInVault = () => {
     return Object.values(foundWords).some(
@@ -59,18 +97,16 @@ const WordVaultGame: React.FC = () => {
 
 
   useEffect(() => {
-    const today = new Date().toISOString().split('T')[0]; // Format as 'YYYY-MM-DD'
+    const today = new Date().toISOString().split('T')[0];
     const vaultCompleted = localStorage.getItem('vaultCompleted');
   
-    // Trigger final pop-up and submit data only if the vault hasn't been completed today
     if (allWordsFound() && !showFinalPopup && vaultCompleted !== today) {
-      setFinalTime(formatTime(time)); // Set the final time before showing the pop-up
-      setShowFinalPopup(true); // Trigger the final popup
+      updateStreak(); // Call this before setting the final time and showing the popup
+      setFinalTime(formatTime(time));
+      setShowFinalPopup(true);
   
-      // Store the completion status in local storage
       localStorage.setItem('vaultCompleted', today);
   
-      // Check if the completion time is valid before posting to the database
       if (time > 0) {
         // Submit the game completion data
         fetch('/api/vault-stats', {
@@ -93,7 +129,6 @@ const WordVaultGame: React.FC = () => {
       }
     }
   }, [allWordsFound, showFinalPopup, time]);
-  
 
 
   const loadChain = async (): Promise<string[]> => {
@@ -153,6 +188,9 @@ useEffect(() => {
     const [loadedChain, loadedValidWords] = await Promise.all([loadChain(), loadValidWords()]);
     setValidWords(loadedValidWords);
     setSolutionChain(loadedChain);
+    setGuessedWords([]);
+    setCurrentGuessIndex(null);
+
 
     if (loadedChain.length < 5) {
       console.error('Not enough words in the chain.');
@@ -197,6 +235,13 @@ useEffect(() => {
   initializeGame();
 }, []);
 
+useEffect(() => {
+  const savedCurrentStreak = localStorage.getItem('currentStreak');
+  const savedMaxStreak = localStorage.getItem('maxStreak');
+  
+  if (savedCurrentStreak) setCurrentStreak(parseInt(savedCurrentStreak));
+  if (savedMaxStreak) setMaxStreak(parseInt(savedMaxStreak));
+}, []);
 
   // Timer effect: Start/stop timer based on the game state
   useEffect(() => {
@@ -286,17 +331,16 @@ useEffect(() => {
   }, [handleKeyPress]);
 
   const handleSubmitWord = () => {
-    setAttempts((prevAttempts) => prevAttempts + 1); // Increment attempt count
+    setAttempts((prevAttempts) => prevAttempts + 1);
     const selectedWord = selectedLetters.map((l) => l.char).join('');
-
-    // Check if the word length is exactly 5 letters
+  
+    // Validation checks
     if (selectedWord.length !== 5) {
       setGameMessage('Only 5-letter words are allowed!');
       resetSelection();
       return;
     }
   
-    
     if (selectedWord === '') {
       setGameMessage('No letters selected!');
       resetSelection();
@@ -309,47 +353,36 @@ useEffect(() => {
       return;
     }
   
-    // Check if the word matches one of the solution words
-    const wordIndex = solutionChain.indexOf(selectedWord);
-    if (wordIndex !== -1 && foundWords[wordIndex]?.every((letter) => letter.color === 'green')) {
-      setGameMessage('Word already found!');
-      resetSelection();
-      return;
-    }
-  
-    // Prepare the word to be added to all vault rows, regardless of whether it's a solution or not
+    // Create vaultEntries
     const vaultEntries: { [key: number]: VaultLetter[] } = {};
   
     solutionChain.forEach((solutionWord, index) => {
-      // Skip updating this row if it already contains a solution word
       if (foundWords[index] && foundWords[index].every((letter) => letter.color === 'green')) {
-        vaultEntries[index] = foundWords[index]; // Keep the existing solution word
+        vaultEntries[index] = foundWords[index];
         return;
       }
   
       const letterColors: VaultLetter[] = Array(5).fill({ char: '', color: 'red' });
       const solutionCharCount: { [char: string]: number } = {};
   
-      // Count occurrences of each character in the solution word
       solutionWord.split('').forEach((char) => {
         solutionCharCount[char] = (solutionCharCount[char] || 0) + 1;
       });
   
-      // Mark green letters (correct position)
+      // Mark green letters
       selectedWord.split('').forEach((char, i) => {
         if (solutionWord[i] === char) {
           letterColors[i] = { char, color: 'green' };
-          solutionCharCount[char] -= 1; // Reduce count for correctly placed letter
+          solutionCharCount[char] -= 1;
         }
       });
   
-      // Mark yellow letters (correct letter, wrong position) and red letters (incorrect letter)
+      // Mark yellow and red letters
       selectedWord.split('').forEach((char, i) => {
         if (letterColors[i].color !== 'green') {
-          // Only mark as yellow if there are still occurrences left in the solution
           if (solutionWord.includes(char) && solutionCharCount[char] > 0) {
             letterColors[i] = { char, color: 'yellow' };
-            solutionCharCount[char] -= 1; // Reduce count for correctly guessed but misplaced letter
+            solutionCharCount[char] -= 1;
           } else {
             letterColors[i] = { char, color: 'red' };
           }
@@ -359,21 +392,30 @@ useEffect(() => {
       vaultEntries[index] = letterColors;
     });
   
-    // Update foundWords for each row with the colored valid word, without overriding solutions
+    // Add to Time Capsule
+    const newGuessedWord: GuessedWord = {
+      word: selectedWord,
+      hints: Object.values(vaultEntries)
+    };
+    setGuessedWords(prev => [...prev, newGuessedWord]);
+    setCurrentGuessIndex(guessedWords.length);
+  
+    // Update foundWords
     setFoundWords((prevFoundWords) => {
       const updatedFoundWords = { ...prevFoundWords };
   
       Object.keys(vaultEntries).forEach((rowIndex) => {
         const rowIdx = parseInt(rowIndex);
         if (!updatedFoundWords[rowIdx] || updatedFoundWords[rowIdx].some((letter) => letter.color !== 'green')) {
-          updatedFoundWords[rowIdx] = vaultEntries[rowIdx]; // Add or replace the entry only if it's not a solution word
+          updatedFoundWords[rowIdx] = vaultEntries[rowIdx];
         }
       });
   
       return updatedFoundWords;
     });
   
-    // Update the grid to mark the letters as unselectable if they were part of a solution word
+    // Update the grid for solution words
+    const wordIndex = solutionChain.indexOf(selectedWord);
     if (wordIndex !== -1) {
       setGrid((prevGrid) =>
         prevGrid.map((row, rowIndex) =>
@@ -383,8 +425,8 @@ useEffect(() => {
                 ...cell,
                 unselectable: true,
                 selected: false,
-                char: '', // Clear the character to visually indicate it's used
-                correct: true, // Mark as correct (black out the cell)
+                char: '',
+                correct: true,
               };
             }
             return cell;
@@ -399,14 +441,14 @@ useEffect(() => {
   
     resetSelection();
   
-    // Use a callback to ensure state update before checking if all words are found
+    // Check if all words are found
     setFoundWords((prevFoundWords) => {
       const updatedFoundWords = { ...prevFoundWords };
   
       Object.keys(vaultEntries).forEach((rowIndex) => {
         const rowIdx = parseInt(rowIndex);
         if (!updatedFoundWords[rowIdx] || updatedFoundWords[rowIdx].some((letter) => letter.color !== 'green')) {
-          updatedFoundWords[rowIdx] = vaultEntries[rowIdx]; // Add or replace the entry only if it's not a solution word
+          updatedFoundWords[rowIdx] = vaultEntries[rowIdx];
         }
       });
   
@@ -414,14 +456,33 @@ useEffect(() => {
         Object.keys(updatedFoundWords).length === 5 &&
         Object.values(updatedFoundWords).every((word) => word && word.every((letter) => letter.color === 'green'))
       ) {
-        setFinalTime(formatTime(time)); // Set the final time before showing the pop-up
-        setShowFinalPopup(true); // Trigger the final popup
+        setFinalTime(formatTime(time));
+        setShowFinalPopup(true);
       }
   
       return updatedFoundWords;
     });
   };
-  
+
+  const handleTimeCapsuleScroll = (index: number) => {
+    setCurrentGuessIndex(index);
+    
+    if (index !== null) {
+      const selectedGuess = guessedWords[index];
+      setFoundWords((prevFoundWords) => {
+        const updatedFoundWords = { ...prevFoundWords };
+        selectedGuess.hints.forEach((hint, i) => {
+          // Only update if the current word isn't a solution word (all green)
+          if (!updatedFoundWords[i] || !updatedFoundWords[i].every(letter => letter.color === 'green')) {
+            updatedFoundWords[i] = hint;
+          }
+        });
+        return updatedFoundWords;
+      });
+    }
+  };
+
+
   
   // Helper function to reset the selection state and grid
   const resetSelection = () => {
@@ -482,6 +543,14 @@ useEffect(() => {
 
   return (
     <div className={styles.container}>
+          <div className={styles.timeCapsuleContainer}>
+          <TimeCapsule 
+          guessedWords={guessedWords}
+          currentIndex={currentGuessIndex}
+          onSelectGuess={handleTimeCapsuleScroll}
+          onReturnToCurrent={() => setCurrentGuessIndex(null)}  // Add this line
+        />
+    </div>
       <div className={styles.mainContent}>
         {/* Alignment Container for System Log, Selected Letters, and Grid/Button */}
         <div className={styles.alignmentContainer}>
@@ -578,6 +647,8 @@ useEffect(() => {
           finalTime={finalTime}
           currentDay={currentDay} // Pass the current day to the FinalPopup
           attempts={attempts} // Pass the attempts to FinalPopup
+          currentStreak={currentStreak}
+          maxStreak={maxStreak}
         />
       )}
     </div>

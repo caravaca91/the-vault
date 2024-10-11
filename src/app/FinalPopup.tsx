@@ -1,14 +1,23 @@
+import styles from './FinalPopup.module.css';
 import React from 'react';
-import styles from './finalPopup.module.css';
+
+
 
 interface FinalPopupProps {
   onClose: () => void;
   finalTime: string;
   currentDay: number;
   attempts: number;
+  currentStreak: number;
+  maxStreak: number;
 }
 
-const FinalPopup: React.FC<FinalPopupProps> = ({ onClose, finalTime, currentDay, attempts }) => {
+const FinalPopup: React.FC<FinalPopupProps> = ({ 
+  onClose, 
+  finalTime, 
+  currentDay, 
+  attempts,
+}) => {
   const shareUrl = 'https://vault899.com';
   const shareMessage = `I have solved the Vault ${currentDay}/899 in ${finalTime} with ${attempts} attempts! Can you solve it too? Play now at ${shareUrl} #Vault899`;
 
