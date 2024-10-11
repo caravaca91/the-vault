@@ -142,10 +142,6 @@ const LandingPage: React.FC = () => {
             <li>{'The timer starts when you click "Start Game". You have unlimited attempts, but we count them. Solve the puzzle in the '}<strong>fewest attempts and shortest time possible</strong>.</li>
           </ul>
           <p className={styles.instructionsText}>Are you ready?</p>
-
-          <p className={styles.adFreeNote}>
-            Game by <a href="https://buymeacoffee.com/marticabanes" target="_blank" rel="noopener noreferrer" className={styles.link}>MCC</a>
-          </p>
         </div>
       </div>
     </div>

@@ -10,87 +10,113 @@
   justify-content: center;
   z-index: 1000;
 }
-  
+
+.popup {
+  background-color: #111;
+  padding: 20px;
+  border-radius: 10px;
+  border: 2px solid #33ff33;
+  max-width: 500px;
+  width: 90%;
+  color: #33ff33;
+  text-align: center;
+  box-shadow: 0 0 20px #33ff33;
+}
+
+.title {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  text-shadow: 0 0 10px #33ff33;
+}
+
+.message {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+
+.adFreeNote {
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  color: #33ff33;
+}
+
+.link {
+  color: #00ff00;
+  text-decoration: underline;
+}
+
+.closeButton, .shareButton {
+  padding: 10px 20px;
+  margin-right: 10px;
+  background-color: #000;
+  color: #33ff33;
+  font-size: 1.2rem;
+  border: 2px solid #33ff33;
+  border-radius: 8px;
+  cursor: pointer;
+  text-shadow: 0 0 5px #33ff33;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.closeButton:hover, .shareButton:hover {
+  background-color: #111;
+  box-shadow: 0 0 15px #00ff00;
+}
+
+.finalTime {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.shareButtons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.twitterButton {
+  background-color: #1DA1F2;
+  border-color: #1DA1F2;
+  color: white;
+}
+
+.twitterButton:hover {
+  background-color: #0c85d0;
+  box-shadow: 0 0 15px #1DA1F2;
+}
+
+.whatsappButton {
+  background-color: #25D366;
+  border-color: #25D366;
+  color: white;
+}
+
+.whatsappButton:hover {
+  background-color: #128C7E;
+  box-shadow: 0 0 15px #25D366;
+}
+
+@media (max-width: 768px) {
   .popup {
-    background-color: #111; /* Dark background */
-    padding: 20px;
-    border-radius: 10px;
-    border: 2px solid #33ff33; /* Green border for retro look */
-    max-width: 500px;
-    width: 90%; /* Adjusted to fit mobile screens better */
-    color: #33ff33; /* Retro green text color */
-    text-align: center;
-    box-shadow: 0 0 20px #33ff33; /* Glow effect */
+    padding: 15px;
+    width: 95%;
   }
-  
-  
+
   .title {
-    font-size: 1.8rem; /* Adjusted for mobile */
-    margin-bottom: 15px;
-    text-shadow: 0 0 10px #33ff33; /* Glow effect */
+    font-size: 1.5rem;
   }
-  
-  
-  .message {
-    font-size: 1rem; /* Adjusted for mobile */
-    line-height: 1.5;
-    margin-bottom: 15px;
-  }
-  
-  
+
+  .message,
+  .finalTime,
   .adFreeNote {
     font-size: 0.9rem;
-    margin-bottom: 20px;
-    color: #33ff33;
-  }
-  
-  .link {
-    color: #00ff00; /* Lighter green for emphasis */
-    text-decoration: underline;
-  }
-  
-  .closeButton {
-    padding: 10px 20px;
-    margin-right: 10px;
-    background-color: #000;
-    color: #33ff33;
-    font-size: 1.2rem;
-    border: 2px solid #33ff33;
-    border-radius: 8px;
-    cursor: pointer;
-    text-shadow: 0 0 5px #33ff33;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .closeButton:hover {
-    background-color: #111; /* Slightly lighter black */
-    box-shadow: 0 0 15px #00ff00; /* Stronger glow when hovered */
   }
 
-  .finalTime {
-    font-size: 1.2rem; /* Slightly larger for emphasis */
-    font-weight: bold;
-    margin-bottom: 20px;
+  .closeButton, .shareButton {
+    font-size: 0.9rem;
+    padding: 8px 15px;
   }
-
-  @media (max-width: 768px) {
-    .popup {
-      padding: 15px;
-      width: 95%; /* Slightly larger for smaller screens */
-    }
-  
-    .title {
-      font-size: 1.5rem;
-    }
-  
-    .message,
-    .finalTime,
-    .adFreeNote {
-      font-size: 0.9rem; /* Reduced font size for better fit */
-    }
-  
-    .closeButton {
-      font-size: 0.9rem;
-      padding: 8px 15px; /* Smaller padding for buttons */
-    }
-  }
+}

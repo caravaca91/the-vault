@@ -4,6 +4,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import styles from './vault.module.css';
 import FinalPopup from './FinalPopup'; // Import the FinalPopup component
 import { useRouter } from 'next/navigation';
+import seedrandom from 'seedrandom';
+
 
 
 interface GridCell {
@@ -92,18 +94,44 @@ const WordVaultGame: React.FC = () => {
     }
   }, [allWordsFound, showFinalPopup, time]);
   
-  
-  
 
 
-// Load chain from CSV file
-const loadChain = async (dayIndex: number): Promise<string[]> => {
-  const response = await fetch('/word_chains_5x5.csv');
-  const text = await response.text();
-  const lines = text.split('\n').slice(1); // Skip the header row
-  const currentChain = lines[dayIndex]?.split(',').slice(1).map((word) => word.trim().toUpperCase());
-  return currentChain || [];
-};
+  const loadChain = async (): Promise<string[]> => {
+    try {
+      // Fetch the content of WORDS.txt
+      const response = await fetch('/WORDS.txt');
+      const text = await response.text();
+      
+      // Split the text into an array of words
+      const words = text.trim().split('\n').map(word => word.trim().toLowerCase());
+      
+      // Create a seed based on the current date
+      const today = new Date();
+      const seed = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+
+      
+      // Create a seeded random number generator
+      const rng = seedrandom(seed);
+      
+      // Fisher-Yates shuffle algorithm with seeded random
+      for (let i = words.length - 1; i > 0; i--) {
+        const j = Math.floor(rng() * (i + 1));
+        [words[i], words[j]] = [words[j], words[i]];
+      }
+      
+      // Select the first 5 words
+      const selectedWords = words.slice(0, 5);
+
+      console.log(`Generated word chain: ${selectedWords.join(', ')}`);
+
+      
+      // Convert to uppercase for consistency with your previous approach
+      return selectedWords.map(word => word.toUpperCase());
+    } catch (error) {
+      console.error('Error loading words:', error);
+      return [];
+    }
+  };
 
 // Load valid words from enable1.txt
 const loadValidWords = async (): Promise<Set<string>> => {
@@ -116,22 +144,17 @@ const loadValidWords = async (): Promise<Set<string>> => {
 
 useEffect(() => {
   const initializeGame = async () => {
-    // Calculate the current day since the start date
-    const startDate = new Date('2024-10-07'); // Set the start date of the game
+    const startDate = new Date('2024-10-07');
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Ensure the current date is considered without any time component
-
+    today.setHours(0, 0, 0, 0);
+  
     const dayDifference = Math.floor((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
-
-    // Use `dayDifference - 1` to load the correct CSV row (e.g., day 2 -> row index 1)
-    const dayIndex = Math.min(Math.max(dayDifference, 0), 901);
-
-    setCurrentDay(dayDifference); // Set the current day for display
-
-    // Load the word chain and valid words
-    const [loadedChain, loadedValidWords] = await Promise.all([loadChain(dayIndex), loadValidWords()]);
+  
+    setCurrentDay(dayDifference);
+  
+    const [loadedChain, loadedValidWords] = await Promise.all([loadChain(), loadValidWords()]);
     setValidWords(loadedValidWords);
-    setSolutionChain(loadedChain.slice(0, 5)); // Set the first 5 words for the solution chain
+    setSolutionChain(loadedChain);
 
     if (loadedChain.length < 5) {
       console.error('Not enough words in the chain.');

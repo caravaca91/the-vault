@@ -1,20 +1,25 @@
 import React from 'react';
-import styles from './finalPopup.module.css'; // Import the CSS for styling the pop-up
+import styles from './finalPopup.module.css';
 
 interface FinalPopupProps {
   onClose: () => void;
   finalTime: string;
-  currentDay: number; // Add current day as a prop to include in the share message
-  attempts: number; // Add attempts as a prop
+  currentDay: number;
+  attempts: number;
 }
 
 const FinalPopup: React.FC<FinalPopupProps> = ({ onClose, finalTime, currentDay, attempts }) => {
-  const shareUrl = 'https://vault899.com'; // URL to share
+  const shareUrl = 'https://vault899.com';
   const shareMessage = `I have solved the Vault ${currentDay}/899 in ${finalTime} with ${attempts} attempts! Can you solve it too? Play now at ${shareUrl} #Vault899`;
 
-  const handleShare = () => {
+  const handleShareTwitter = () => {
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareMessage)}`;
     window.open(twitterUrl, '_blank');
+  };
+
+  const handleShareWhatsApp = () => {
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareMessage)}`;
+    window.open(whatsappUrl, '_blank');
   };
 
   return (
@@ -26,16 +31,17 @@ const FinalPopup: React.FC<FinalPopupProps> = ({ onClose, finalTime, currentDay,
           <strong>The world is now a better place.</strong>
         </p>
         <p className={styles.finalTime}>Time taken: {finalTime}</p>
-        <p className={styles.finalTime}>Attempts: <strong>{attempts}</strong>
-        </p>
-        <p className={styles.adFreeNote}>
-          Game by <a href="https://buymeacoffee.com/marticabanes" target="_blank" rel="noopener noreferrer" className={styles.link}>MCC</a>.
-        </p>
+        <p className={styles.finalTime}>Attempts: <strong>{attempts}</strong></p>
 
-        {/* Share Button */}
-        <button className={styles.closeButton} onClick={handleShare}>
-          Share on X
-        </button>
+        {/* Share Buttons */}
+        <div className={styles.shareButtons}>
+          <button className={`${styles.shareButton} ${styles.twitterButton}`} onClick={handleShareTwitter}>
+            Share on X
+          </button>
+          <button className={`${styles.shareButton} ${styles.whatsappButton}`} onClick={handleShareWhatsApp}>
+            Share on WhatsApp
+          </button>
+        </div>
 
         <button className={styles.closeButton} onClick={onClose}>Close</button>
       </div>
