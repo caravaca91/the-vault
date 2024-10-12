@@ -26,11 +26,13 @@ interface CompletionStats {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
     try {
-      const today = new Date().toISOString().split('T')[0]; // Format today's date as YYYY-MM-DD
-      
+      // Get the current date in UTC
+      const nowUTC = new Date();
+      const todayUTC = nowUTC.toISOString().split('T')[0]; // Get UTC date in YYYY-MM-DD
+
       const [todayResults] = await pool.query<RowDataPacket[]>(
         'SELECT COUNT(*) as count, AVG(completion_time) as average_time, MIN(completion_time) as fastest_time FROM completions WHERE completion_date = ?',
-        [today]
+        [todayUTC]
       );
       const [recordResults] = await pool.query<RowDataPacket[]>(
         'SELECT completion_date, COUNT(*) as count FROM completions GROUP BY completion_date ORDER BY count DESC LIMIT 1'

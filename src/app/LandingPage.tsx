@@ -35,13 +35,6 @@ const LandingPage: React.FC = () => {
     return `${minutes} minute${minutes !== 1 ? 's' : ''} and ${seconds} second${seconds !== 1 ? 's' : ''}`;
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${month}-${day}-${year}`;
-  };
 
   const calculateTimeRemaining = () => {
     const now = new Date();
@@ -59,6 +52,14 @@ const LandingPage: React.FC = () => {
     const now = new Date();
     now.setHours(0, 0, 0, 0);  // Set the time to midnight in the local time zone
     return now.toISOString().split('T')[0];  // Convert to ISO string and extract the date part
+  };
+
+  const formatDateToLocal = (dateString: string) => {
+    const date = new Date(dateString);  // Interpret the UTC date as local time
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${month}-${day}-${year}`;
   };
 
   useEffect(() => {
@@ -82,7 +83,7 @@ const LandingPage: React.FC = () => {
       checkSolveStatus();
     }
   }, []);
-  
+
   useEffect(() => {
     const dayDifference = calculateDayDifference();
 
@@ -94,23 +95,21 @@ const LandingPage: React.FC = () => {
     // Fetch the stats from the API with a fake delay
     const fetchStats = async () => {
       try {
-        // Add a fake delay of 2 seconds
         await new Promise((resolve) => setTimeout(resolve, 2000));
-
         const response = await fetch('/api/vault-stats-summary');
         if (response.ok) {
           const data = await response.json();
           setStats({
             ...data,
             averageTime: formatAverageTime(data.averageTime),
-            recordDay: formatDate(data.recordDay),
+            recordDay: formatDateToLocal(data.recordDay),  // Use local date formatting
           });
         }
       } catch (error) {
         console.error('Failed to fetch game stats:', error);
       }
     };
-
+    
     fetchStats();
 
     // Update the timer every second

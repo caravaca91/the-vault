@@ -1,15 +1,11 @@
 import styles from './finalPopup.module.css';
-import React from 'react';
-
-
+import React, { useEffect } from 'react';
 
 interface FinalPopupProps {
   onClose: () => void;
   finalTime: string;
   currentDay: number;
   attempts: number;
-  currentStreak: number;
-  maxStreak: number;
 }
 
 const FinalPopup: React.FC<FinalPopupProps> = ({ 
@@ -30,6 +26,19 @@ const FinalPopup: React.FC<FinalPopupProps> = ({
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareMessage)}`;
     window.open(whatsappUrl, '_blank');
   };
+
+  // Function to get today's local date in YYYY-MM-DD format
+  const getLocalDate = () => {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0); // Set time to midnight in local time
+    return now.toISOString().split('T')[0]; // Return YYYY-MM-DD
+  };
+
+  // Update localStorage when the popup is shown
+  useEffect(() => {
+    const today = getLocalDate();
+    localStorage.setItem('lastSolvedDate', today); // Save today's date in localStorage
+  }, []);
 
   return (
     <div className={styles.overlay}>
