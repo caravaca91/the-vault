@@ -55,17 +55,34 @@ const LandingPage: React.FC = () => {
     return `${hours}:${minutes}:${seconds}`;
   };
 
+  const getLocalDate = () => {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);  // Set the time to midnight in the local time zone
+    return now.toISOString().split('T')[0];  // Convert to ISO string and extract the date part
+  };
 
   useEffect(() => {
     const checkSolveStatus = () => {
       const lastSolvedDate = localStorage.getItem('lastSolvedDate');
-      const today = new Date().toISOString().split('T')[0];
+      const today = getLocalDate();  // Get the local date
       setHasSolvedToday(lastSolvedDate === today);
     };
   
     checkSolveStatus();
   }, []);
 
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const checkSolveStatus = () => {
+        const lastSolvedDate = localStorage.getItem('lastSolvedDate');
+        const today = getLocalDate();
+        setHasSolvedToday(lastSolvedDate === today);
+      };
+      checkSolveStatus();
+    }
+  }, []);
+  
   useEffect(() => {
     const dayDifference = calculateDayDifference();
 

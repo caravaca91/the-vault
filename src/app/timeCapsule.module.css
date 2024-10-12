@@ -63,3 +63,31 @@
   .navButton:hover:not(:disabled) {
     background-color: #2ecc71;
   }
+
+  /* Mobile-specific layout for Time Capsule */
+@media (max-width: 768px) {
+    .timeCapsule {
+      width: 90vw; /* Adjust width for mobile */
+      margin-top: 20px; /* Add spacing */
+      margin-bottom: 10px; /* Space below Time Capsule */
+      order: 2; /* Make sure it comes after Vault on mobile */
+      flex-direction: column;
+    }
+  
+    .scrollContainer {
+      height: auto; /* Let it adjust height dynamically */
+      max-height: 200px; /* Set a reasonable max height for scrolling */
+      overflow-y: auto; /* Enable scrolling */
+    }
+  
+    .guessEntry {
+      font-size: 14px; /* Adjust font size for mobile */
+      padding: 5px; /* Reduce padding for compact view */
+    }
+  
+    .navButton, .returnButton {
+      font-size: 12px; /* Smaller buttons for mobile */
+      padding: 8px; /* Adjust padding */
+    }
+  }
+  

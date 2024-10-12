@@ -284,9 +284,9 @@
     align-items: center;
     justify-content: flex-start;
     padding: 10px;
-    gap: 20px; /* Reduced gap for a more compact layout */
-    height: auto; /* Allow height to adjust */
-    overflow-y: auto; /* Allow scrolling if needed */
+    gap: 20px;
+    height: auto; /* Let height adjust dynamically */
+    overflow-y: auto; /* Allow scrolling */
   }
 
   .returnButton {
@@ -463,4 +463,12 @@
     transform: none !important; /* Remove scaling to avoid overflow */
     border: 2px solid #00ff00 !important; /* Use a thicker border to indicate selection */
 }
+
+.timeCapsuleContainer {
+  width: 90vw; /* Take full width */
+  order: 2; /* Ensure it is after the vault */
+  margin-bottom: 20px;
 }
+
+}
+
