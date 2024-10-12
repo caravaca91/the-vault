@@ -647,8 +647,6 @@ useEffect(() => {
           finalTime={finalTime}
           currentDay={currentDay} // Pass the current day to the FinalPopup
           attempts={attempts} // Pass the attempts to FinalPopup
-          currentStreak={currentStreak}
-          maxStreak={maxStreak}
         />
       )}
     </div>
