@@ -4,33 +4,32 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  gap: 100px;
-  font-family: 'Courier New', Courier, monospace; /* Monospaced font for retro look */
-  background-color: #000; /* Dark background */
-  color: #33ff33; /* Retro green text */
+  gap: 50px;
+font-family: 'Courier New', Courier, monospace;
+  background-color: #121213;
+  color: #d7dadc;
 }
 
-/* Shared alignment container to ensure all elements start from the same place */
+/* Shared alignment container */
 .alignmentContainer {
-  width: fit-content; /* Ensure width fits content size */
-  margin-left: auto; /* Align the container to the left margin */
-  margin-right: auto; /* Center it if necessary */
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Grid container */
 .gridContainer {
   display: grid;
-  grid-template-columns: repeat(7, 1fr); /* Adjusted to 7x7 structure */
+  grid-template-columns: repeat(7, 1fr);
   grid-template-rows: repeat(7, 1fr);
   gap: 5px;
-  background-color: #333; /* Darker background to simulate an old screen */
-  border: 2px solid #33ff33; /* Green border for retro look */
-  border-radius: 8px;
+  background-color: #121213;
+  border: 2px solid #3a3a3c;
+  border-radius: 4px;
   padding: 10px;
-  box-shadow: 0 0 10px #33ff33; /* Neon glow effect */
-  margin-bottom: 5px; /* Space below the grid */
+  margin-bottom: 15px;
   margin-top: 20px;
-  width: fit-content; /* Ensures grid fits content size */
+  width: fit-content;
 }
 
 /* Individual grid cell */
@@ -40,76 +39,75 @@
   align-items: center;
   font-size: 20px;
   font-weight: bold;
-  color: #33ff33; /* Green text for retro aesthetic */
-  background-color: #000; /* Black background like a terminal */
-  border: 1px solid #33ff33; /* Green border for retro look */
-  height: 40px; /* Adjust size */
-  width: 40px;  /* Adjust size */
-  transition: transform 0.2s ease, background-color 0.3s ease;
-  text-shadow: 0 0 5px #33ff33; /* Glow effect to emulate a CRT screen */
+  color: #d7dadc;
+  background-color: #121213;
+  border: 2px solid #3a3a3c;
+  height: 40px;
+  width: 40px;
+  transition: all 0.2s ease;
 }
 
 .gridCell:hover {
-  background-color: #222; /* Slightly lighter when hovered */
-  transform: scale(1.05);
-  border-color: #00ff00; /* Lighter green border when hovered */
+  background-color: #3a3a3c;
 }
 
 .selected {
-  background-color: #00ff00 !important; /* Bright green for selected cells */
-  color: #000 !important; /* Black text for contrast */
-  transform: scale(1.1);
+  background-color: #538d4e !important;
+  color: #ffffff !important;
+  border-color: #538d4e !important;
 }
 
 .unselectable {
-  background-color: #000 !important; /* Black background when in the vault */
-  color: #000 !important; /* Hide the text by making it black */
-  border-color: #33ff33; /* Keep the retro green border */
+  background-color: #3a3a3c !important;
+  color: #3a3a3c !important;
 }
 
 .correct {
-  background-color: #000 !important; /* Black color for correct cells */
-  color: #33ff33 !important; /* Retro green text */
+  background-color: #3a3a3c !important;
+  color: #ffffff !important;
+  border-color: #3a3a3c !important;
 }
 
-/* Status colors for letters in the vault or main grid */
+/* Status colors for letters */
 .green {
-  background-color: #00ff00 !important; /* Bright green for correct position */
-  color: #000 !important; /* Black text */
+  background-color: #538d4e !important;
+  color: #ffffff !important;
+  border-color: #538d4e !important;
 }
 
 .yellow {
-  background-color: #ffff33 !important; /* Bright yellow for wrong position */
-  color: #000 !important; /* Black text */
+  background-color: #b59f3b !important;
+  color: #ffffff !important;
+  border-color: #b59f3b !important;
 }
 
 .red {
-  background-color: #ff3333 !important; /* Bright red for incorrect letter */
-  color: #000 !important; /* Black text */
+  background-color: #3a3a3c !important;
+  color: #ffffff !important;
+  border-color: #3a3a3c !important;
 }
 
 .gray {
-  background-color: #666 !important; /* Dark gray for unselectable cells */
-  color: #fff !important;
+  background-color: #3a3a3c !important;
+  color: #ffffff !important;
 }
 
 /* Vault section styling */
 .vaultSection {
   display: flex;
   justify-content: center;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
-/* Vault grid styled like the main grid */
+/* Vault grid */
 .vaultGrid {
   display: grid;
-  gap: 3px; /* Reduce gap to bring cells closer */
-  background-color: #222; /* Darker background for vault section */
-  border: 2px solid #33ff33;
-  border-radius: 8px;
+  gap: 3px;
+  background-color: #121213;
+  border: 2px solid #3a3a3c;
+  border-radius: 4px;
   padding: 5px;
-  box-shadow: 0 0 10px #33ff33; /* Neon glow effect */
-  max-width: 95vw; /* Ensure vault grid fits within the viewport */
+  max-width: 95vw;
 }
 
 /* Individual vault cell */
@@ -120,76 +118,60 @@
   justify-content: center;
   align-items: center;
   font-size: 20px;
-  color: #33ff33;
-  background-color: #000; /* Black background */
-  border: 1px solid #33ff33; /* Green border */
-  text-shadow: 0 0 5px #33ff33; /* Glow effect */
+  color: #d7dadc;
+  background-color: #121213;
+  border: 2px solid #3a3a3c;
 }
 
-.blackCell {
-  background-color: #000 !important;
-  color: #fff !important;
-}
-
-/* Submit Button Below the Grid */
-.submitButton {
-  padding: 10px;
-  background-color: #000; /* Black background for retro style */
-  color: #33ff33; /* Green text */
-  font-size: 14px;
+/* Submit Button */
+.submitButton, .returnButton {
+  padding: 10px 20px;
+  background-color: #538d4e;
+  color: #ffffff;
+  font-size: 16px;
   font-weight: bold;
-  border: 2px solid #33ff33; /* Green border */
-  border-radius: 8px;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  text-shadow: 0 0 5px #33ff33; /* Glow effect */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
-  margin-left: auto;
-  margin-right: auto; /* Center the button horizontally */
+  transition: background-color 0.3s ease;
+  margin: 10px auto;
+  display: block;
 }
 
-.submitButton:hover {
-  background-color: #111; /* Slightly lighter black */
-  box-shadow: 0 0 15px #00ff00; /* Stronger glow when hovered */
+.submitButton:hover, .returnButton:hover {
+  background-color: #6aaa64;
 }
 
 /* System Log Container */
 .gameMessage {
-  width: 300px; /* Fixed width for the message area */
-  height: 100px; /* Reserve fixed height to ensure grid doesn't move */
+  width: 300px;
+  height: 100px;
   margin-top: 20px;
-  color: #33ff33; /* Retro green color for text */
-  font-size: 18px;
-  font-weight: bold; /* Bold for title */
+  color: #d7dadc;
+  font-size: 16px;
   display: flex;
   flex-direction: column;
-  word-wrap: break-word; /* Ensure long words are wrapped */
-  overflow: hidden; /* Prevent content from overflowing */
+  word-wrap: break-word;
+  overflow: hidden;
   margin-bottom: 20px;
-  padding: 10px; /* Add padding for better readability */
-  box-sizing: border-box; /* Include padding in width/height calculation */
-  background-color: #000; /* Slightly darker background for contrast */
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: #121213;
+  border-radius: 4px;
 }
 
 .gameMessageTitle {
-  margin-bottom: 5px; /* Space between title and message */
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
 .gameMessageContent {
-  white-space: pre-wrap; /* Allow wrapping for long messages */
-  font-weight: normal; /* Regular font weight for the message */
-  overflow: hidden; /* Hide overflow to prevent content expansion */
-  text-overflow: ellipsis; /* Add ellipsis for overflowing text */
-  height: 100%; /* Fill the height of the container */
-  line-height: 1.4em; /* Line height for readability */
-}
-
-.gameMessageContent.expandable {
-  overflow-y: auto; /* Allow scrolling if the content exceeds max-height */
-  max-height: 120px; /* Allow expansion for longer messages */
+  white-space: pre-wrap;
+  font-weight: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 100%;
+  line-height: 1.4em;
 }
 
 /* Blinking cursor animation */
@@ -198,277 +180,110 @@
 }
 
 @keyframes blink {
-  0%, 50% {
-    opacity: 1;
-  }
-  51%, 100% {
-    opacity: 0;
-  }
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
 }
 
 /* Letters Selected Section */
-.selectedLetters h3 {
-  font-weight: bold; /* Bold for "Letters Selected" title */
-  color: #33ff33; /* Retro green color */
-}
-
-.selectedLettersContent {
-  font-weight: normal; /* Regular font weight for the typed word */
+.selectedLetters {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
   margin-bottom: 20px;
 }
 
+.selectedLettersContent {
+  font-weight: normal;
+  margin-bottom: 20px;
+}
 
 /* Button Container Styling */
 .buttonContainer {
   display: flex;
   justify-content: center;
-  gap: 20px; /* Space between buttons */
-  margin-top: 20px; /* Space above the buttons */
-}
-
-/* Return Button Styling */
-.returnButton {
-  padding: 10px;
-  background-color: #000; /* Black background for retro style */
-  color: #33ff33; /* Green text */
-  font-size: 14px;
-  font-weight: bold;
-  border: 2px solid #33ff33; /* Green border */
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  text-shadow: 0 0 5px #33ff33; /* Glow effect */
-  width: fit-content; /* Adjust width to fit content */
-  margin: 10px auto; /* Center the button horizontally */
-  display: flex; /* Align items inside the button */
-  justify-content: center; /* Center the content inside the button */
-  align-items: center; /* Vertically center the content */
-}
-
-.returnButton:hover {
-  background-color: #111; /* Slightly lighter black */
-  box-shadow: 0 0 15px #00ff00; /* Stronger glow when hovered */
+  gap: 20px;
+  margin-top: 20px;
 }
 
 /* Vault Title Styling */
 .vaultTitle {
   font-weight: bold;
-  font-size: 1.5rem; /* Adjust size for emphasis */
-  color: #33ff33; /* Retro green text */
-  text-shadow: 0 0 10px #33ff33; /* Neon glow effect */
+  font-size: 1.5rem;
+  color: #d7dadc;
   text-align: center;
-  margin-top: 10px; /* Space above the title */
+  margin-top: 10px;
 }
 
 .gridAndButtonContainer {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center both the grid and the button horizontally */
-  margin-bottom: 20px; /* Space below the entire container */
-  margin-left: 0; /* Align to the left */
+  align-items: center;
+  margin-bottom: 20px;
+  margin-left: 0;
 }
 
 /* Attempts Count Styling */
 .attemptsCount {
   font-weight: bold;
-  font-size: 1.2rem; /* Adjust size as needed */
-  color: #33ff33; /* Retro green text */
+  font-size: 1.2rem;
+  color: #d7dadc;
   text-align: center;
-  margin-bottom: 10px; /* Space below the attempts count */
+  margin-bottom: 10px;
 }
+
 /* Responsive Design for Mobile */
 @media (max-width: 768px) {
   .container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
+    height: auto;
+    min-height: 100vh;
     padding: 10px;
-    gap: 20px;
-    height: auto; /* Let height adjust dynamically */
-    overflow-y: auto; /* Allow scrolling */
+    gap: 15px;
   }
 
-  .returnButton {
-    padding: 10px;
-    background-color: #000; /* Black background for retro style */
-    color: #33ff33; /* Green text */
-    font-size: 14px;
-    font-weight: bold;
-    border: 2px solid #33ff33; /* Green border */
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    text-shadow: 0 0 5px #33ff33; /* Glow effect */
-    width: fit-content; /* Adjust width to fit content */
-    margin: 10px auto; /* Center the button horizontally */
+  .mainContent {
+    order: 1;
+    width: 100%;
   }
 
-  /* Center the timer */
-  .timer {
-    text-align: center;
-    font-size: 1.2rem; /* Reduce font size for better fit */
-    margin-bottom: 20px; /* Space below the timer */
-    color: #33ff33; /* Retro green */
+  .sidebar {
+    order: 2;
+    width: 100%;
   }
 
-  /* Make grid container 'invisible' while keeping cells visible */
+  .timeCapsuleContainer {
+    order: 3;
+    width: 100%;
+    margin-top: auto; /* Push to the bottom */
+  }
+
   .gridContainer {
-    background-color: transparent; /* Remove the background color */
-    border: none; /* Remove the border */
-    box-shadow: none; /* Remove the glow effect */
-    width: 90vw; /* Ensure the grid fits the screen width */
-    max-width: 90vw;
-    gap: 3px; /* Reduce the gap between cells */
-    margin-bottom: 10;
+    width: 100%;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(7, 1fr);
+    gap: 5px;
   }
 
-  /* Individual grid cell */
   .gridCell {
-    width: calc(90vw / 8 - 4px); /* Adjust cell size to fit within grid */
-    height: calc(90vw / 8 - 4px); /* Maintain square shape */
-    font-size: calc(90vw / 16); /* Reduce font size for smaller cells */
-    padding: 2px;
-    overflow: hidden; /* Ensure content doesn't overflow beyond the cell */
-    box-sizing: border-box; /* Include border and padding in width/height */
+    width: calc((100vw - 40px) / 5);
+    height: calc((100vw - 40px) / 5);
+    font-size: 16px;
+    padding: 0;
   }
 
-  /* Centering the System Log */
-  .gameMessage {
-    width: 90vw; /* Keep it within the viewport */
-    height: 100px; /* Fixed height to ensure it does not expand */
-    overflow-y: auto; /* Allow scrolling for long content */
-    font-size: 0.8rem; /* Reduce font size */
-    margin-top: 10px; /* Reduce space above */
-    margin-bottom: 10px; /* Reduce space below */
-    padding: 5px; /* Reduce padding for more content */
-    box-sizing: border-box; /* Keep padding in width/height calculation */
-  }
-  /* Letters Selected Section - adjust cursor position */
-  .selectedLetters {
-    width: 90vw;
-    max-width: 90vw;
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  .selectedLetters h3 {
-    font-weight: bold; /* Bold for "Letters Selected" title */
-    color: #33ff33; /* Retro green color */
-    display: block; /* Ensure title is on its own line */
-    margin-bottom: 10px; /* Add space between title and letters */
-  }
-  
-  .selectedLettersContent {
-    font-weight: normal; /* Regular font weight for the typed word */
-    display: inline; /* Display the selected letters and cursor inline */
-    margin-top: 0; /* No extra spacing needed here */
-    line-height: 1.5;
-  }
-  
-  .blinkingCursor {
-    display: inline; /* Keep the cursor inline with the text */
-    margin-left: 5px;
-    vertical-align: middle; /* Align cursor vertically with the text */
-    animation: blink 1s steps(1) infinite; /* Blinking animation */
+  .gameMessage, .selectedLetters, .buttonContainer, .vaultGrid {
+    width: 100%;
   }
 
-  /* Button Container Styling */
-  .buttonContainer {
-    flex-direction: column;
-    width: 90vw;
-    max-width: 90vw;
-    text-align: center;
-    margin-top: 10px;
-    gap: 10px;
-  }
-
-  .attemptsCount {
-    font-size: 1rem; /* Smaller font size for mobile */
-    text-align: center; /* Center the attempts count */
-    margin-top: 10px; /* Space above the attempts count */
-    margin-right: 0; /* Remove right margin */
+  .vaultCell {
+    width: calc((100vw - 40px) / 5);
+    height: calc((100vw - 40px) / 5);
+    font-size: 16px;
   }
 
   .submitButton {
-    padding: 10px;
-    margin-top: 5px; /* Reduce space above the button */
-    font-size: 1rem;
-    background-color: #000; /* Retro black background */
-    color: #33ff33; /* Green text for button */
-    border: 2px solid #33ff33; /* Matching green border */
-    border-radius: 8px;
-    cursor: pointer;
-    text-shadow: 0 0 5px #33ff33; /* Glow effect */
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    margin-top: 15px;
   }
-
-  .submitButton:hover {
-    background-color: #111; /* Slightly lighter black when hovered */
-    box-shadow: 0 0 15px #00ff00; /* Glow effect when hovered */
-  }
-
-/* Vault section styling for mobile */
-.vaultSection {
-  display: flex;
-  justify-content: center; /* Align the vault to the center */
-  margin-bottom: 10px;
-  width: fit-content; /* Adjust width to fit content size */
-  margin-left: auto; /* Center the vault section */
-  margin-right: auto; /* Center the vault section */
 }
-
-/* Vault grid styled like the main grid, removing the background */
-.vaultGrid {
-  display: grid;
-  gap: 2px; /* Reduce gap for compact spacing */
-  grid-template-columns: repeat(10, 1fr); /* Ensure it fits within the viewport for 10 cells */
-  background-color: transparent; /* Remove background */
-  border: none; /* Remove border for a cleaner look */
-  box-shadow: none; /* Remove shadow */
-  padding: 0;
-}
-
-/* Individual vault cell */
-.vaultCell {
-  width: calc(90vw / 12); /* Reduce size to fit 10 cells comfortably */
-  height: calc(90vw / 12); /* Maintain square shape */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: calc(90vw / 20); /* Adjust font size for readability */
-  color: #33ff33; /* Retro green color */
-  background-color: #000; /* Black background to match the overall theme */
-  border: 1px solid #33ff33; /* Retro green border */
-  text-shadow: 0 0 5px #33ff33; /* Glow effect */
-  align-items: center
-}
-
-  /* Adjust button container styling for mobile */
-  .buttonContainer {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-
-  .vaultTitle {
-    font-size: 1.0rem; /* Reduce font size for mobile */
-    text-align: center; /* Align the title to the center */
-    margin-top: 10px; /* Add a small margin for spacing */
-    margin-right: 0; /* Remove right margin */
-    color: #33ff33; /* Maintain the retro green color */
-  }
-
-.selected {
-    transform: none !important; /* Remove scaling to avoid overflow */
-    border: 2px solid #00ff00 !important; /* Use a thicker border to indicate selection */
-}
-
-.timeCapsuleContainer {
-  width: 90vw; /* Take full width */
-  order: 2; /* Ensure it is after the vault */
-  margin-bottom: 20px;
-}
-
-}
-

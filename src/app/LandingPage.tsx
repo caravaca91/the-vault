@@ -35,6 +35,9 @@ const LandingPage: React.FC = () => {
     return `${minutes} minute${minutes !== 1 ? 's' : ''} and ${seconds} second${seconds !== 1 ? 's' : ''}`;
   };
 
+  const handlePracticeMode = () => {
+    router.push('/practice');
+  };
 
   const calculateTimeRemaining = () => {
     const now = new Date();
@@ -158,6 +161,13 @@ const handleStartGame = () => {
       >
         {hasSolvedToday ? "Vault already opened today!" : "Start Game"}
       </button>
+      
+      <button
+          className={`${styles.startButton} ${styles.practiceButton}`}
+          onClick={handlePracticeMode}
+        >
+          Practice Mode
+        </button>
 
         <div className={styles.instructionsBox}>
           <h2 className={styles.subtitle}>How to Play:</h2>

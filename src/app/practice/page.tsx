@@ -1,13 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from 'react';
-import styles from './vault.module.css';
-import FinalPopup from './FinalPopup'; // Adjust the path if necessary
-import { useRouter } from 'next/navigation';
+import styles from '../vault.module.css';  // Adjust this path as necessary
+import FinalPopup from '../FinalPopup';
+import TimeCapsule from '../TimeCapsule';
 import seedrandom from 'seedrandom';
-import TimeCapsule from './TimeCapsule'; // Adjust the path if necessary
-import Link from 'next/link';
-
 
 
 interface GridCell {
@@ -30,163 +27,64 @@ interface SelectedLetter {
 
 interface GuessedWord {
   word: string;
-  hints: VaultLetter[][];  // Array of hint arrays, one for each solution word
+  hints: VaultLetter[][];
 }
 
-const WordVaultGame: React.FC = () => {
+const PracticeMode: React.FC = () => {
   const [grid, setGrid] = useState<GridCell[][]>([]);
   const [selectedLetters, setSelectedLetters] = useState<SelectedLetter[]>([]);
   const [foundWords, setFoundWords] = useState<{ [rowIndex: number]: VaultLetter[] | null }>({});
   const [validWords, setValidWords] = useState<Set<string>>(new Set());
   const [solutionChain, setSolutionChain] = useState<string[]>([]);
-  const [time, setTime] = useState(0);
-  const [attempts, setAttempts] = useState<number>(0); // New state for tracking attempts
-  const [isGameStarted, setIsGameStarted] = useState(false);
+  const [attempts, setAttempts] = useState<number>(0);
   const [gameMessage, setGameMessage] = useState<string | null>(null);
   const [showFinalPopup, setShowFinalPopup] = useState(false);
-  const [finalTime, setFinalTime] = useState<string>('');
-  const router = useRouter(); // Use Next.js router for navigation
-  const [currentDay, setCurrentDay] = useState<number>(1);
   const [guessedWords, setGuessedWords] = useState<GuessedWord[]>([]);
   const [currentGuessIndex, setCurrentGuessIndex] = useState<number | null>(null);
-  const [currentStreak, setCurrentStreak] = useState<number>(0);
-  const [maxStreak, setMaxStreak] = useState<number>(0);
-  const [dailyChallengeCompleted, setDailyChallengeCompleted] = useState(false);
+  const [gameCompleted, setGameCompleted] = useState(false);
 
-
-  const recordGameCompletion = () => {
-    const today = new Date().toISOString().split('T')[0];
-    localStorage.setItem('lastSolvedDate', today);
+  const loadValidWords = async (): Promise<Set<string>> => {
+    const response = await fetch('/enable1.txt');
+    const text = await response.text();
+    const words = text.split('\n').map((word) => word.trim().toUpperCase());
+    return new Set(words);
   };
 
-  const hasValidWordsInVault = () => {
-    return Object.values(foundWords).some(
-      (word) => word && word.some((letter) => letter.color !== 'green')
-    );
-  };
-
-
-  // Function to check if all words have been found
-  const allWordsFound = useCallback(() => {
-    return Object.keys(foundWords).length === 5 &&
-      Object.values(foundWords).every(
-        (word) => word && word.every((letter) => letter.color === 'green')
-      );
-  }, [foundWords]);
-
-
-  useEffect(() => {
-    const checkDailyCompletion = () => {
-      const lastCompletedDate = localStorage.getItem('vaultCompleted');
-      const today = new Date().toISOString().split('T')[0];
-      setDailyChallengeCompleted(lastCompletedDate === today);
-    };
-  
-    checkDailyCompletion();
-  }, []);
-  
-  useEffect(() => {
-      const today = new Date().toISOString().split('T')[0];
-      const vaultCompleted = localStorage.getItem('vaultCompleted');
-    
-      if (allWordsFound() && !showFinalPopup && vaultCompleted !== today) {
-        recordGameCompletion(); // Call this instead of updateStreak
-        setFinalTime(formatTime(time));
-        setShowFinalPopup(true);
-    
-        localStorage.setItem('vaultCompleted', today);
-    
-        if (time > 0) {
-          // Submit the game completion data
-          fetch('/api/vault-stats', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              completionTime: formatTime(time),
-              completionDate: today,
-            }),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              console.log('Game completion saved:', data);
-            })
-            .catch((error) => {
-              console.error('Error saving game completion:', error);
-            });
-        }
-      }
-    }, [allWordsFound, showFinalPopup, time]);
-
-
-  const loadChain = async (): Promise<string[]> => {
+  const loadChain = useCallback(async (): Promise<string[]> => {
     try {
-      // Fetch the content of WORDS.txt
       const response = await fetch('/WORDS.txt');
       const text = await response.text();
-      
-      // Split the text into an array of words
-      const words = text.trim().split('\n').map(word => word.trim().toLowerCase());
-      
-      // Create a seed based on the current date
-      const today = new Date();
-      const seed = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
-
-      
-      // Create a seeded random number generator
-      const rng = seedrandom(seed);
-      
-      // Fisher-Yates shuffle algorithm with seeded random
+      const words = text.trim().split('\n').map(word => word.trim().toUpperCase());
+  
+      // Use current timestamp to seed the random number generator
+      const rng = seedrandom(Date.now().toString());
+  
+      // Shuffle the words array using Fisher-Yates algorithm
       for (let i = words.length - 1; i > 0; i--) {
         const j = Math.floor(rng() * (i + 1));
         [words[i], words[j]] = [words[j], words[i]];
       }
-      
-      // Select the first 5 words
-      const selectedWords = words.slice(0, 5);
-
-      
-      // Convert to uppercase for consistency with your previous approach
-      return selectedWords.map(word => word.toUpperCase());
+  
+      // Log the selected words for debugging purposes
+      const selectedWords = words.slice(0, 5); // Select 5 random words
+      console.log('Practice mode solution:', selectedWords);
+  
+      return selectedWords;
     } catch (error) {
       console.error('Error loading words:', error);
       return [];
     }
-  };
-
-// Load valid words from enable1.txt
-const loadValidWords = async (): Promise<Set<string>> => {
-  const response = await fetch('/enable1.txt');
-  const text = await response.text();
-  const words = text.split('\n').map((word) => word.trim().toUpperCase());
-  return new Set(words);
-};
-
-
-useEffect(() => {
-  const initializeGame = async () => {
-    const startDate = new Date('2024-10-07');
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+  }, []);
   
-    const dayDifference = Math.floor((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
-  
-    setCurrentDay(dayDifference);
-  
+
+  const initializeGame = useCallback(async () => {
     const [loadedChain, loadedValidWords] = await Promise.all([loadChain(), loadValidWords()]);
     setValidWords(loadedValidWords);
     setSolutionChain(loadedChain);
+    setGameCompleted(false);
     setGuessedWords([]);
     setCurrentGuessIndex(null);
 
-
-    if (loadedChain.length < 5) {
-      console.error('Not enough words in the chain.');
-      return;
-    }
-
-    // Initialize found words to null for each vault row (0-4)
     setFoundWords({
       0: null,
       1: null,
@@ -195,50 +93,28 @@ useEffect(() => {
       4: null,
     });
 
-    // Extract letters from the 5 solution words
-    const allLetters = loadedChain.slice(0, 5).join('');
-
-    if (allLetters.length < 25) {
-      console.error('Not enough letters to fill the grid');
-      return;
-    }
-
-    // Shuffle the letters to create the grid
+    const allLetters = loadedChain.join('');
     const shuffledLetters = allLetters.split('').sort(() => Math.random() - 0.5);
-    const gridCells: GridCell[] = [];
+    const gridCells: GridCell[] = shuffledLetters.map(char => ({ 
+      char, 
+      selected: false, 
+      correct: false, 
+      unselectable: false 
+    }));
 
-    for (let i = 0; i < 25; i++) {
-      gridCells.push({ char: shuffledLetters[i], selected: false, correct: false, unselectable: false });
-    }
-
-    // Create a 5x5 grid from the shuffled letters
     const newGrid: GridCell[][] = [];
     for (let i = 0; i < 5; i++) {
-      newGrid.push(gridCells.slice(i * 5, (i + 1) * 5)); // Create 5 rows with 5 cells each
+      newGrid.push(gridCells.slice(i * 5, (i + 1) * 5));
     }
 
     setGrid(newGrid);
-    setIsGameStarted(true);
-  };
+    setAttempts(0);
+    setShowFinalPopup(false);
+  }, [loadChain]);
 
-  initializeGame();
-}, []);
-
-useEffect(() => {
-  const savedCurrentStreak = localStorage.getItem('currentStreak');
-  const savedMaxStreak = localStorage.getItem('maxStreak');
-  
-  if (savedCurrentStreak) setCurrentStreak(parseInt(savedCurrentStreak));
-  if (savedMaxStreak) setMaxStreak(parseInt(savedMaxStreak));
-}, []);
-
-  // Timer effect: Start/stop timer based on the game state
   useEffect(() => {
-    if (isGameStarted && !showFinalPopup) {
-      const timer = setInterval(() => setTime((prev) => prev + 1), 1000);
-      return () => clearInterval(timer);
-    }
-  }, [isGameStarted, showFinalPopup]);
+    initializeGame();
+  }, [initializeGame]);
 
   const handleSelectLetter = (row: number, col: number) => {
     const cell = grid[row][col];
@@ -270,9 +146,9 @@ useEffect(() => {
     (event: KeyboardEvent) => {
       const key = event.key.toUpperCase();
       if (key === 'BACKSPACE' && selectedLetters.length > 0) {
-        const lastSelected = selectedLetters[selectedLetters.length - 1]; // Get the last selected letter
+        const lastSelected = selectedLetters[selectedLetters.length - 1];
   
-        setSelectedLetters((prevSelected) => prevSelected.slice(0, -1)); // Remove the last selected letter
+        setSelectedLetters((prevSelected) => prevSelected.slice(0, -1));
   
         setGrid((prevGrid) =>
           prevGrid.map((row, rowIndex) =>
@@ -283,7 +159,7 @@ useEffect(() => {
                 cell.selected &&
                 !cell.correct
               ) {
-                return { ...cell, selected: false }; // Deselect only the last selected cell
+                return { ...cell, selected: false };
               }
               return cell;
             })
@@ -300,7 +176,6 @@ useEffect(() => {
     },
     [selectedLetters, grid]
   );
-  
 
   const findGridCell = (char: string) => {
     for (let row = 0; row < grid.length; row++) {
@@ -323,7 +198,6 @@ useEffect(() => {
     setAttempts((prevAttempts) => prevAttempts + 1);
     const selectedWord = selectedLetters.map((l) => l.char).join('');
   
-    // Validation checks
     if (selectedWord.length !== 5) {
       setGameMessage('Only 5-letter words are allowed!');
       resetSelection();
@@ -342,7 +216,6 @@ useEffect(() => {
       return;
     }
   
-    // Create vaultEntries
     const vaultEntries: { [key: number]: VaultLetter[] } = {};
   
     solutionChain.forEach((solutionWord, index) => {
@@ -358,7 +231,6 @@ useEffect(() => {
         solutionCharCount[char] = (solutionCharCount[char] || 0) + 1;
       });
   
-      // Mark green letters
       selectedWord.split('').forEach((char, i) => {
         if (solutionWord[i] === char) {
           letterColors[i] = { char, color: 'green' };
@@ -366,7 +238,6 @@ useEffect(() => {
         }
       });
   
-      // Mark yellow and red letters
       selectedWord.split('').forEach((char, i) => {
         if (letterColors[i].color !== 'green') {
           if (solutionWord.includes(char) && solutionCharCount[char] > 0) {
@@ -381,7 +252,6 @@ useEffect(() => {
       vaultEntries[index] = letterColors;
     });
   
-    // Add to Time Capsule
     const newGuessedWord: GuessedWord = {
       word: selectedWord,
       hints: Object.values(vaultEntries)
@@ -389,7 +259,6 @@ useEffect(() => {
     setGuessedWords(prev => [...prev, newGuessedWord]);
     setCurrentGuessIndex(guessedWords.length);
   
-    // Update foundWords
     setFoundWords((prevFoundWords) => {
       const updatedFoundWords = { ...prevFoundWords };
   
@@ -403,7 +272,6 @@ useEffect(() => {
       return updatedFoundWords;
     });
   
-    // Update the grid for solution words
     const wordIndex = solutionChain.indexOf(selectedWord);
     if (wordIndex !== -1) {
       setGrid((prevGrid) =>
@@ -430,7 +298,6 @@ useEffect(() => {
   
     resetSelection();
   
-    // Check if all words are found
     setFoundWords((prevFoundWords) => {
       const updatedFoundWords = { ...prevFoundWords };
   
@@ -445,35 +312,13 @@ useEffect(() => {
         Object.keys(updatedFoundWords).length === 5 &&
         Object.values(updatedFoundWords).every((word) => word && word.every((letter) => letter.color === 'green'))
       ) {
-        setFinalTime(formatTime(time));
-        setShowFinalPopup(true);
+        setGameCompleted(true);
       }
   
       return updatedFoundWords;
     });
   };
 
-  const handleTimeCapsuleScroll = (index: number) => {
-    setCurrentGuessIndex(index);
-    
-    if (index !== null) {
-      const selectedGuess = guessedWords[index];
-      setFoundWords((prevFoundWords) => {
-        const updatedFoundWords = { ...prevFoundWords };
-        selectedGuess.hints.forEach((hint, i) => {
-          // Only update if the current word isn't a solution word (all green)
-          if (!updatedFoundWords[i] || !updatedFoundWords[i].every(letter => letter.color === 'green')) {
-            updatedFoundWords[i] = hint;
-          }
-        });
-        return updatedFoundWords;
-      });
-    }
-  };
-
-
-  
-  // Helper function to reset the selection state and grid
   const resetSelection = () => {
     setSelectedLetters([]);
     setGrid((prevGrid) =>
@@ -483,29 +328,25 @@ useEffect(() => {
     );
     setTimeout(() => setGameMessage(null), 3000);
   };
-  
-  
+
   const handleReturnValidWords = () => {
-    // Update the foundWords state to remove all valid words but keep solution words
     setFoundWords((prevFoundWords) => {
       const updatedFoundWords = { ...prevFoundWords };
   
       Object.keys(updatedFoundWords).forEach((rowIndex) => {
         const word = updatedFoundWords[parseInt(rowIndex)];
         if (word && word.some((letter) => letter.color !== 'green')) {
-          updatedFoundWords[parseInt(rowIndex)] = null; // Remove the valid word
+          updatedFoundWords[parseInt(rowIndex)] = null;
         }
       });
   
       return updatedFoundWords;
     });
   
-    // Update the grid to make the letters selectable again for the removed words
     setGrid((prevGrid) =>
       prevGrid.map((row) =>
         row.map((cell) => {
           if (cell.unselectable && !cell.correct) {
-            // Make the cell selectable again if it was part of a removed valid word
             return {
               ...cell,
               unselectable: false,
@@ -520,25 +361,59 @@ useEffect(() => {
     setGameMessage('All valid words have been returned.');
     setTimeout(() => setGameMessage(null), 3000);
   };
-  
-  
-  
-  const formatTime = (time: number) => {
-    const hours = String(Math.floor(time / 3600)).padStart(2, '0');
-    const minutes = String(Math.floor((time % 3600) / 60)).padStart(2, '0');
-    const seconds = String(time % 60).padStart(2, '0');
-    return `${hours}:${minutes}:${seconds}`;
+
+  const handlePlayAgain = () => {
+    initializeGame();
+  };
+
+  const hasValidWordsInVault = () => {
+    return Object.values(foundWords).some(
+      (word) => word && word.some((letter) => letter.color !== 'green')
+    );
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.timeCapsuleContainer}>
-        <TimeCapsule 
-          guessedWords={guessedWords}
-          currentIndex={currentGuessIndex}
-          onSelectGuess={handleTimeCapsuleScroll}
-          onReturnToCurrent={() => setCurrentGuessIndex(null)}
-        />
+      <TimeCapsule 
+  guessedWords={guessedWords}
+  currentIndex={currentGuessIndex}
+  onSelectGuess={(index) => {
+    setCurrentGuessIndex(index);
+    const selectedGuess = guessedWords[index];
+    setFoundWords((prevFoundWords) => {
+      const updatedFoundWords = { ...prevFoundWords };
+      
+      selectedGuess.hints.forEach((hint, i) => {
+        // Ensure the solution (green word) is not overwritten
+        if (!updatedFoundWords[i] || !updatedFoundWords[i].every(letter => letter.color === 'green')) {
+          updatedFoundWords[i] = hint;
+        }
+      });
+      
+      return updatedFoundWords;
+    });
+  }}
+  onReturnToCurrent={() => {
+    setCurrentGuessIndex(null);
+    if (guessedWords.length > 0) {
+      const latestGuess = guessedWords[guessedWords.length - 1];
+      setFoundWords((prevFoundWords) => {
+        const updatedFoundWords = { ...prevFoundWords };
+        
+        latestGuess.hints.forEach((hint, i) => {
+          // Ensure the solution (green word) is not overwritten
+          if (!updatedFoundWords[i] || !updatedFoundWords[i].every(letter => letter.color === 'green')) {
+            updatedFoundWords[i] = hint;
+          }
+        });
+        
+        return updatedFoundWords;
+      });
+    }
+  }}
+/>
+
       </div>
       <div className={styles.mainContent}>
         <div className={styles.alignmentContainer}>
@@ -547,6 +422,15 @@ useEffect(() => {
             <div className={styles.gameMessageContent}>{gameMessage || ''}</div>
           </div>
   
+          <div className={styles.selectedLetters}>
+            <h3>
+              Selected Letters: <br />
+              <span className={styles.selectedLettersContent}>
+                {selectedLetters.map((l) => l.char).join('')}
+              </span>
+              <span className={styles.blinkingCursor}>|</span>
+            </h3>
+          </div>
   
           <div className={styles.gridAndButtonContainer}>
             <div
@@ -556,7 +440,7 @@ useEffect(() => {
                 gridTemplateRows: 'repeat(5, 1fr)',
               }}
             >
-              {grid.map((row, rowIndex) =>
+{grid.map((row, rowIndex) =>
                 row.map((cell, colIndex) => (
                   <div
                     key={`${rowIndex}-${colIndex}`}
@@ -570,28 +454,20 @@ useEffect(() => {
                 ))
               )}
             </div>
-            <div className={styles.selectedLetters}>
-            <h3>
-              Selected Letters: <br />
-              <span className={styles.selectedLettersContent}>
-                {selectedLetters.map((l) => l.char).join('')}
-              </span>
-              <span className={styles.blinkingCursor}>|</span>
-            </h3>
-          </div>
+  
             <button className={styles.submitButton} onClick={handleSubmitWord}>
               Submit Word
             </button>
           </div>
         </div>
       </div>
-  
+
       <div className={styles.sidebar}>
         <div className={styles.attemptsCount}>Attempts: {attempts}</div>
-        <div className={styles.vaultTitle}>{formatTime(time)}</div>
         <div className={styles.vaultTitle}>THE VAULT</div>
         {[...Array(5)].map((_, rowIndex) => {
           const word = foundWords[rowIndex];
+
           return (
             <div key={rowIndex} className={styles.vaultSection}>
               <div className={styles.vaultGrid} style={{ gridTemplateColumns: `repeat(5, 1fr)` }}>
@@ -627,24 +503,36 @@ useEffect(() => {
         <FinalPopup
           onClose={() => {
             setShowFinalPopup(false);
-            router.push('/');
+            handlePlayAgain();
           }}
-          finalTime={finalTime}
-          currentDay={currentDay}
+          finalTime="" // Pass an empty string for time in practice mode
+          currentDay={0} // Use 0 for practice mode
           attempts={attempts}
-          currentStreak={currentStreak}
-          maxStreak={maxStreak}
+          currentStreak={0} // Streaks don't apply in practice mode
+          maxStreak={0}
+          isPracticeMode={true}
         />
       )}
-  
-      {dailyChallengeCompleted && (
-        <div className={styles.practiceLink}>
-          <Link href="/practice">
-            <a className={styles.practiceLinkButton}>Go to Practice Mode</a>
-          </Link>
-        </div>
+
+{gameCompleted && (
+        <FinalPopup
+        onClose={handlePlayAgain}
+          finalTime="" // Pass an empty string for time in practice mode
+          currentDay={0}
+          attempts={attempts}
+          currentStreak={0}
+          maxStreak={0}
+          isPracticeMode={true}
+        />
+      )}
+
+      {gameCompleted && (
+        <button className={styles.playAgainButton} onClick={handlePlayAgain}>
+          Play Again
+        </button>
       )}
     </div>
   );
-}
-export default WordVaultGame;
+};
+
+export default PracticeMode;

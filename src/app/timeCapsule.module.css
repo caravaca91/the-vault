@@ -1,93 +1,112 @@
 .timeCapsule {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .title {
-    color: #33ff33;
-    margin-bottom: 10px;
-  }
-  
-  .scrollContainer {
-    flex-grow: 1;
-    overflow-y: auto;
-    margin-bottom: 10px;
-  }
-  
-  .guessEntry {
-    margin-bottom: 5px;
-    padding: 5px;
-    cursor: pointer;
-    color: #33ff33;
-  }
-  
-  .guessEntry:hover {
-    background-color: rgba(51, 255, 51, 0.1);
-  }
-  
-  .selected {
-    background-color: rgba(51, 255, 51, 0.2);
-    font-weight: bold;
-  }
-  
-  .navigation {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  
-  .navButton {
-    background-color: #33ff33;
-    color: black;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-  
-  .navButton:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  
-  .returnButton {
-    background-color: #33ff33;
-    color: black;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    width: 100%;
-  }
-  
-  .returnButton:hover,
-  .navButton:hover:not(:disabled) {
-    background-color: #2ecc71;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #1a1a1b;
+  border-radius: 4px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.title {
+  color: #d7dadc;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.scrollContainer {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 15px;
+  scrollbar-width: thin;
+  scrollbar-color: #3a3a3c #121213;
+}
+
+.scrollContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollContainer::-webkit-scrollbar-track {
+  background: #121213;
+}
+
+.scrollContainer::-webkit-scrollbar-thumb {
+  background-color: #3a3a3c;
+  border-radius: 4px;
+}
+
+.guessEntry {
+  margin-bottom: 8px;
+  padding: 8px;
+  cursor: pointer;
+  color: #d7dadc;
+  background-color: #2a2a2b;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.guessEntry:hover {
+  background-color: #3a3a3c;
+}
+
+.selected {
+  background-color: #538d4e;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.navButton, .returnButton {
+  background-color: #538d4e;
+  color: #ffffff;
+  border: none;
+  padding: 8px 15px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.navButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.returnButton {
+  width: 100%;
+}
+
+.returnButton:hover,
+.navButton:hover:not(:disabled) {
+  background-color: #6aaa64;
+}
+
+/* Mobile-specific layout for Time Capsule */
+@media (max-width: 768px) {
+  .timeCapsule {
+    width: 90vw;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    order: 2;
   }
 
-  /* Mobile-specific layout for Time Capsule */
-@media (max-width: 768px) {
-    .timeCapsule {
-      width: 90vw; /* Adjust width for mobile */
-      margin-top: 20px; /* Add spacing */
-      margin-bottom: 10px; /* Space below Time Capsule */
-      order: 2; /* Make sure it comes after Vault on mobile */
-      flex-direction: column;
-    }
-  
-    .scrollContainer {
-      height: auto; /* Let it adjust height dynamically */
-      max-height: 200px; /* Set a reasonable max height for scrolling */
-      overflow-y: auto; /* Enable scrolling */
-    }
-  
-    .guessEntry {
-      font-size: 14px; /* Adjust font size for mobile */
-      padding: 5px; /* Reduce padding for compact view */
-    }
-  
-    .navButton, .returnButton {
-      font-size: 12px; /* Smaller buttons for mobile */
-      padding: 8px; /* Adjust padding */
-    }
+  .scrollContainer {
+    max-height: 200px;
   }
-  
+
+  .guessEntry {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .navButton, .returnButton {
+    font-size: 12px;
+    padding: 10px;
+  }
+}
