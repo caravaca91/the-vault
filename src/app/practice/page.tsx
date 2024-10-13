@@ -52,7 +52,7 @@ const PracticeMode: React.FC = () => {
 
   const loadChain = useCallback(async (): Promise<string[]> => {
     try {
-      const response = await fetch('/WORDS.txt');
+      const response = await fetch('/valid_words.txt');
       const text = await response.text();
       const words = text.trim().split('\n').map(word => word.trim().toUpperCase());
   
@@ -67,7 +67,6 @@ const PracticeMode: React.FC = () => {
   
       // Log the selected words for debugging purposes
       const selectedWords = words.slice(0, 5); // Select 5 random words
-      console.log('Practice mode solution:', selectedWords);
   
       return selectedWords;
     } catch (error) {

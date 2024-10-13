@@ -123,7 +123,7 @@ const WordVaultGame: React.FC = () => {
   const loadChain = async (): Promise<string[]> => {
     try {
       // Fetch the content of WORDS.txt
-      const response = await fetch('/WORDS.txt');
+      const response = await fetch('/valid_words.txt');
       const text = await response.text();
       
       // Split the text into an array of words
@@ -145,6 +145,7 @@ const WordVaultGame: React.FC = () => {
       
       // Select the first 5 words
       const selectedWords = words.slice(0, 5);
+      console.log('Practice mode solution:', selectedWords);
 
       
       // Convert to uppercase for consistency with your previous approach
