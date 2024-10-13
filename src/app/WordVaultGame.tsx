@@ -145,8 +145,6 @@ const WordVaultGame: React.FC = () => {
       
       // Select the first 5 words
       const selectedWords = words.slice(0, 5);
-      console.log('Practice mode solution:', selectedWords);
-
       
       // Convert to uppercase for consistency with your previous approach
       return selectedWords.map(word => word.toUpperCase());
