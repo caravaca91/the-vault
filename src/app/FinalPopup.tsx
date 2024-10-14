@@ -37,18 +37,32 @@ const FinalPopup: React.FC<FinalPopupProps> = ({
       { range: '>25', min: 25, max: Infinity },
     ];
   
+    let allSolutionsFound = false; // Track if all solutions are found
+  
     return resultRows.map((row) => {
+      if (allSolutionsFound) return null; // Skip further rows once all solutions are found
+  
       const squares = Array(5).fill('⬛').map((_, i) => {
-        const solutionAttempt = solutionsFound[i]; // Safe to access now
-        return (solutionAttempt && solutionAttempt <= row.max) ? '🟩' : '⬛';
+        const solutionAttempt = solutionsFound[i];
+        const isFound = solutionAttempt && solutionAttempt <= row.max;
+  
+        if (isFound) {
+          return '🟩'; // Solution found in this range
+        }
+        return '⬛';
       }).join('');
   
+      // Check if all solutions are found in this row
+      allSolutionsFound = squares === '🟩🟩🟩🟩🟩'; // If all five solutions are found in this row
+  
       return `Attempts ${row.range}: ${squares}`;
-    });
+    }).filter(Boolean); // Filter out any null values after all solutions are found
   };
+  
 
   const vaultResults = renderVaultResults();
   const shareMessage = `I have solved the Vault ${currentDay}/899 in ${finalTime} with ${attempts} attempts!\n\n${vaultResults.join('\n')}\n\nCan you solve it too? Play now at ${shareUrl} #Vault899`;
+  const whatsappShareMessage = `I have solved the Vault ${currentDay}/899 in ${finalTime} with ${attempts} attempts!\n\nCan you solve it too? Play now at ${shareUrl} #Vault899`;
 
   const handleShareTwitter = () => {
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareMessage)}`;
@@ -56,7 +70,7 @@ const FinalPopup: React.FC<FinalPopupProps> = ({
   };
 
   const handleShareWhatsApp = () => {
-    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareMessage)}`;
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(whatsappShareMessage)}`;
     window.open(whatsappUrl, '_blank');
   };
 

@@ -312,8 +312,10 @@ font-family: 'Courier New', Courier, monospace;
   }
 
   .submitButton {
-    width: 95%;
+    width: auto; /* Change from 95% to auto */
     max-width: 280px;
     margin: 15px auto;
+    padding: 10px 20px; /* Add padding to maintain button size */
+    font-size: 16px; /* Ensure font size is consistent */
   }
 }

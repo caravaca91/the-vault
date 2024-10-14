@@ -320,7 +320,6 @@ useEffect(() => {
   }, [handleKeyPress]);
 
   const handleSubmitWord = () => {
-    setAttempts((prevAttempts) => prevAttempts + 1);
     const selectedWord = selectedLetters.map((l) => l.char).join('');
   
     // Validation checks
@@ -342,6 +341,8 @@ useEffect(() => {
       return;
     }
   
+    setAttempts((prevAttempts) => prevAttempts + 1);
+
     // Create vaultEntries
     const vaultEntries: { [key: number]: VaultLetter[] } = {};
   
