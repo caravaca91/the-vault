@@ -52,6 +52,7 @@ const WordVaultGame: React.FC = () => {
   const [currentStreak, setCurrentStreak] = useState<number>(0);
   const [maxStreak, setMaxStreak] = useState<number>(0);
   const [dailyChallengeCompleted, setDailyChallengeCompleted] = useState(false);
+  const [solutionsFound, setSolutionsFound] = useState<{[key: number]: number}>({});
 
 
   const recordGameCompletion = () => {
@@ -117,7 +118,7 @@ const WordVaultGame: React.FC = () => {
             });
         }
       }
-    }, [allWordsFound, showFinalPopup, time]);
+    }, [allWordsFound, showFinalPopup, time, solutionsFound]);
 
 
   const loadChain = async (): Promise<string[]> => {
@@ -405,6 +406,7 @@ useEffect(() => {
     // Update the grid for solution words
     const wordIndex = solutionChain.indexOf(selectedWord);
     if (wordIndex !== -1) {
+      setSolutionsFound(prev => ({...prev, [wordIndex]: attempts + 1})); // Record which solution was found at which attempt
       setGrid((prevGrid) =>
         prevGrid.map((row, rowIndex) =>
           row.map((cell, colIndex) => {
@@ -633,6 +635,7 @@ useEffect(() => {
           attempts={attempts}
           currentStreak={currentStreak}
           maxStreak={maxStreak}
+          solutionsFound={solutionsFound} // Pass solutionsFound to FinalPopup 
         />
       )}
   

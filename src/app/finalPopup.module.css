@@ -46,7 +46,15 @@
   text-decoration: underline;
 }
 
+.shareSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers the content horizontally */
+}
+
+
 .closeButton, .shareButton {
+  margin-top: 20px;
   padding: 10px 20px;
   margin-right: 10px;
   background-color: #538d4e;
@@ -93,6 +101,45 @@
 
 .whatsappButton:hover {
   background-color: #128C7E;
+}
+
+.vaultResults {
+  margin: 20px auto;
+  text-align: left;
+  display: inline-block;
+}
+
+.alert {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #d4edda;
+  color: #155724;
+  border-radius: 5px;
+}
+
+.vaultResults p {
+  margin: 5px 0;
+  font-family: monospace;
+  font-size: 14px;
+  white-space: pre;
+}
+
+.clipboardButton {
+  background-color: #6c757d;
+  color: white;
+  display: flex;
+  align-items: center; /* Vertically centers the text and icon */
+  justify-content: center;
+  gap: 5px;
+  width: 100%; /* Make the button full width */
+  max-width: 250px; /* Limit the maximum width */
+  padding: 10px; /* Adds space for the button */
+  margin: 10px auto; /* Centers the button horizontally */
+  font-size: 1.1rem; /* Keeps the font size consistent */
+}
+
+.clipboardButton:hover {
+  background-color: #5a6268;
 }
 
 @media (max-width: 768px) {

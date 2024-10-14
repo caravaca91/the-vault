@@ -42,6 +42,9 @@ const PracticeMode: React.FC = () => {
   const [guessedWords, setGuessedWords] = useState<GuessedWord[]>([]);
   const [currentGuessIndex, setCurrentGuessIndex] = useState<number | null>(null);
   const [gameCompleted, setGameCompleted] = useState(false);
+  const isPracticeMode = true; // Define isPracticeMode as true for practice mode
+  const solutionsFound = { 0: 1, 1: 2, 2: 3, 3: 4, 4: 5 }; // Or any default/mock values you need
+
 
   const loadValidWords = async (): Promise<Set<string>> => {
     const response = await fetch('/enable1.txt');
@@ -175,6 +178,7 @@ const PracticeMode: React.FC = () => {
     },
     [selectedLetters, grid]
   );
+
 
   const findGridCell = (char: string) => {
     for (let row = 0; row < grid.length; row++) {
@@ -509,19 +513,20 @@ const PracticeMode: React.FC = () => {
           attempts={attempts}
           currentStreak={0} // Streaks don't apply in practice mode
           maxStreak={0}
-          isPracticeMode={true}
+          isPracticeMode={isPracticeMode} // Use the defined isPracticeMode
         />
       )}
 
-{gameCompleted && (
+      {gameCompleted && (
         <FinalPopup
-        onClose={handlePlayAgain}
+          onClose={handlePlayAgain}
           finalTime="" // Pass an empty string for time in practice mode
           currentDay={0}
           attempts={attempts}
           currentStreak={0}
           maxStreak={0}
-          isPracticeMode={true}
+          isPracticeMode={isPracticeMode} // Use the defined isPracticeMode
+          {...(!isPracticeMode ? { solutionsFound: solutionsFound } : {})} // Conditionally pass solutionsFound
         />
       )}
 

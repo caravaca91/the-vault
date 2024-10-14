@@ -17,6 +17,7 @@
     "less": "^4.2.0",
     "less-loader": "^12.2.0",
     "lodash": "^4.17.21",
+    "lucide-react": "^0.452.0",
     "moment-timezone": "^0.5.45",
     "mysql2": "^3.11.3",
     "next": "14.2.13",
