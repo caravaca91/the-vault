@@ -87,38 +87,39 @@ const WordVaultGame: React.FC = () => {
   }, []);
   
   useEffect(() => {
-      const today = new Date().toISOString().split('T')[0];
-      const vaultCompleted = localStorage.getItem('vaultCompleted');
-    
-      if (allWordsFound() && !showFinalPopup && vaultCompleted !== today) {
-        recordGameCompletion(); // Call this instead of updateStreak
-        setFinalTime(formatTime(time));
-        setShowFinalPopup(true);
-    
-        localStorage.setItem('vaultCompleted', today);
-    
-        if (time > 0) {
-          // Submit the game completion data
-          fetch('/api/vault-stats', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              completionTime: formatTime(time),
-              completionDate: today,
-            }),
+    const today = new Date().toISOString().split('T')[0];
+    const vaultCompleted = localStorage.getItem('vaultCompleted');
+  
+    if (allWordsFound() && !showFinalPopup && vaultCompleted !== today) {
+      recordGameCompletion(); // Call this instead of updateStreak
+      setFinalTime(formatTime(time));
+      setShowFinalPopup(true);
+  
+      localStorage.setItem('vaultCompleted', today);
+  
+      if (time > 0) {
+        // Submit the game completion data
+        fetch('/api/vault-stats', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            completionTime: formatTime(time),
+            completionDate: today,
+            attempts: attempts, // Add this line to include attempts
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log('Game completion saved:', data);
           })
-            .then((response) => response.json())
-            .then((data) => {
-              console.log('Game completion saved:', data);
-            })
-            .catch((error) => {
-              console.error('Error saving game completion:', error);
-            });
-        }
+          .catch((error) => {
+            console.error('Error saving game completion:', error);
+          });
       }
-    }, [allWordsFound, showFinalPopup, time, solutionsFound]);
+    }
+  }, [allWordsFound, showFinalPopup, time, solutionsFound, attempts]); // Add attempts to the dependency array
 
 
   const loadChain = async (): Promise<string[]> => {

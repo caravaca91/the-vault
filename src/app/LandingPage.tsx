@@ -3,11 +3,14 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './landing.module.css'; // Import the landing page CSS
+import AttemptDistributionGraph from './AttemptDistributionGraph';
+
 
 interface Stats {
   todayCount: number;
   averageTime: number; // Average time in seconds
   fastestTime: string; // Formatted as HH:MM:SS
+  leastAttempts: number; // Add this to the type
   recordDay: string;
   recordCount: number;
 }
@@ -133,29 +136,37 @@ const handleStartGame = () => {
   }
 };
 
-  return (
-    <div className={styles.container}>
-      <div className={styles.mainContent}>
-        <h1 className={styles.title}>Vault 899</h1>
+return (
+  <div className={styles.container}>
+    <div className={styles.mainContent}>
+      <h1 className={styles.title}>Vault 899</h1>
 
-        <div className={styles.statsBox}>
-          {stats ? (
-            <p>
-            Today, <strong>{stats.todayCount}</strong> {stats.todayCount === 1 ? 'person has' : 'people have'} opened the Vault.<br />
-            {stats.todayCount > 0 && (
-              <>
-                The fastest did it in <strong>{stats.fastestTime}</strong>.<br />
-              </>
-            )}
-            The record number of Vault openings in a day was <strong>{stats.recordCount}</strong> on <strong>{stats.recordDay}</strong>.
-          </p>
-          ) : (
-            <p>Loading stats...</p>
+      <div className={styles.statsBox}>
+        {stats ? (
+          <>
+          <p>
+          Today, <strong>{stats.todayCount}</strong> {stats.todayCount === 1 ? 'person has' : 'people have'} opened the Vault.<br />
+          {stats.todayCount > 0 && (
+            <>
+              The fastest did it in <strong>{stats.fastestTime}</strong>.<br />
+              The least number of attempts was <strong>{stats.leastAttempts}</strong>.<br /> {/* Display least attempts */}
+            </>
           )}
-        </div>
+          The record number of Vault openings in a day was <strong>{stats.recordCount}</strong> on <strong>{stats.recordDay}</strong>.
+        </p>
 
-        <button 
-        className={styles.startButton} 
+            <div className={styles.graphContainer}>
+              <h3 className={styles.graphTitle}>Attempt Distribution</h3>
+              <AttemptDistributionGraph />
+            </div>
+          </>
+        ) : (
+          <p>Loading stats...</p>
+        )}
+      </div>
+
+      <button
+        className={styles.startButton}
         onClick={handleStartGame}
         disabled={hasSolvedToday}
       >
@@ -163,40 +174,40 @@ const handleStartGame = () => {
       </button>
       
       <button
-          className={`${styles.startButton} ${styles.practiceButton}`}
-          onClick={handlePracticeMode}
-        >
-          Practice Mode
-        </button>
+        className={`${styles.startButton} ${styles.practiceButton}`}
+        onClick={handlePracticeMode}
+      >
+        Practice Mode
+      </button>
 
-        <div className={styles.instructionsBox}>
-          <h2 className={styles.subtitle}>How to Play:</h2>
-          <ul className={styles.instructionList}>
-            <li>Find <strong>5 unique words</strong> <strong>of 5 letters</strong> using <strong>exactly</strong> all the letters from the grid and moving them into <strong>the Vault. </strong>
-             The game will run for <strong>899 days</strong>. Every day a new unique solution is computationally generated.</li>
-            <li>This is <strong>Day {currentDay} of 899</strong>.</li>
-            <li>The next vault opens in: <strong>{timeRemaining}</strong>.</li>
-            <li>Words can be:
-              <ul>
-                <li><strong>Valid Words</strong>: Existing words in English. Letters are colored for hints:
-                  <ul>
-                    <li><strong style={{ color: 'green' }}>Green</strong>: Correct letter and position.</li>
-                    <li><strong style={{ color: 'yellow' }}>Yellow</strong>: Correct letter, wrong position.</li>
-                    <li><strong style={{ color: 'red' }}>Red</strong>: Not part of the solution.</li>
-                  </ul>
-                </li>
-                <li><strong>Solution Words</strong>: Unique words that complete the puzzle. Letters disappear from the grid when found.</li>
-              </ul>
-            </li>
-            <li>Input words using the keyboard and pressing <strong>Enter</strong>, or by selecting with the cursor and clicking <strong>Submit Word</strong>. In your phone, only the second option is available. </li>
-            <li>Move words back to the grid by clicking on <strong>Return Word</strong> below them. Solution words <strong>automatically stay</strong> in the vault. The <strong>time capsule</strong> allows you to check the hints of previous valid words.</li>
-            <li>{'The timer starts when you click "Start Game". You have unlimited attempts, but we count them. Solve the puzzle in the '}<strong>fewest attempts and shortest time possible</strong>.</li>
-          </ul>
-          <p className={styles.instructionsText}>Are you ready?</p>
-        </div>
+      <div className={styles.instructionsBox}>
+        <h2 className={styles.subtitle}>How to Play:</h2>
+        <ul className={styles.instructionList}>
+          <li>Find <strong>5 unique words</strong> <strong>of 5 letters</strong> using <strong>exactly</strong> all the letters from the grid and moving them into <strong>the Vault. </strong>
+           The game will run for <strong>899 days</strong>. Every day a new unique solution is computationally generated.</li>
+          <li>This is <strong>Day {currentDay} of 899</strong>.</li>
+          <li>The next vault opens in: <strong>{timeRemaining}</strong>.</li>
+          <li>Words can be:
+            <ul>
+              <li><strong>Valid Words</strong>: Existing words in English. Letters are colored for hints:
+                <ul>
+                  <li><strong style={{ color: 'green' }}>Green</strong>: Correct letter and position.</li>
+                  <li><strong style={{ color: 'yellow' }}>Yellow</strong>: Correct letter, wrong position.</li>
+                  <li><strong style={{ color: 'red' }}>Red</strong>: Not part of the solution.</li>
+                </ul>
+              </li>
+              <li><strong>Solution Words</strong>: Unique words that complete the puzzle. Letters disappear from the grid when found.</li>
+            </ul>
+          </li>
+          <li>Input words using the keyboard and pressing <strong>Enter</strong>, or by selecting with the cursor and clicking <strong>Submit Word</strong>. In your phone, only the second option is available. </li>
+          <li>Move words back to the grid by clicking on <strong>Return Word</strong> below them. Solution words <strong>automatically stay</strong> in the vault. The <strong>time capsule</strong> allows you to check the hints of previous valid words.</li>
+          <li>{'The timer starts when you click "Start Game". You have unlimited attempts, but we count them. Solve the puzzle in the '}<strong>fewest attempts and shortest time possible</strong>.</li>
+        </ul>
+        <p className={styles.instructionsText}>Are you ready?</p>
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default LandingPage;

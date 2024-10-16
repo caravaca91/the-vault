@@ -1,0 +1,38 @@
+.graphContainer {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .customTooltip {
+    background-color: #1a1a1b;
+    border: 1px solid #3a3a3c;
+    padding: 10px;
+    border-radius: 4px;
+  }
+  
+  .label {
+    color: #d7dadc;
+    margin: 0;
+  }
+  
+  .intro {
+    color: #d7dadc;
+    margin: 5px 0 0;
+  }
+  
+  @media (max-width: 768px) {
+    .graphContainer {
+      max-width: 100%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .customTooltip {
+      padding: 5px;
+    }
+  
+    .label, .intro {
+      font-size: 12px;
+    }
+  }

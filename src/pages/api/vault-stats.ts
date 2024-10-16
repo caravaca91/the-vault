@@ -1,4 +1,3 @@
-
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -20,18 +19,18 @@ const pool = mysql.createPool({
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     // Log each time this endpoint is hit
-    console.log('Received POST request at /api/vault-stats'); 
+    console.log('Received POST request at /api/vault-stats');
 
-    const { completionTime, completionDate } = req.body;
+    const { completionTime, completionDate, attempts } = req.body;
 
-    if (!completionTime || !completionDate) {
-      return res.status(400).json({ error: 'Completion time and date are required.' });
+    if (!completionTime || !completionDate || attempts === undefined) {
+      return res.status(400).json({ error: 'Completion time, date, and attempts are required.' });
     }
 
     try {
-      // Insert the completion date and time into the database
-      const query = 'INSERT INTO completions (completion_time, completion_date) VALUES (?, ?)';
-      const [results] = await pool.query(query, [completionTime, completionDate]);
+      // Insert the completion date, time, and attempts into the database
+      const query = 'INSERT INTO completions (completion_time, completion_date, attempts) VALUES (?, ?, ?)';
+      const [results] = await pool.query(query, [completionTime, completionDate, attempts]);
 
       return res.status(200).json({ message: 'Game completion saved successfully.', results });
     } catch (err) {

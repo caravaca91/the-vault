@@ -145,6 +145,21 @@
   color: #6aaa64;
 }
 
+.graphContainer {
+  background-color: #1a1a1b;
+  border: 1px solid #3a3a3c;
+  border-radius: 4px;
+  padding: 15px;
+  margin-top: 20px;
+}
+
+.graphTitle {
+  font-size: 1.2rem;
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #d7dadc;
+}
+
 /* Media queries for responsiveness */
 @media (max-width: 768px) {
   .title {
